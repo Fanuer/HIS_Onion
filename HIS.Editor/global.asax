@@ -1,0 +1,1 @@
+﻿<%@ Application Inherits="Onion.Client.Editor.WebApplication.Application, Onion.Client.Editor.Impl" Language="C#" %>
