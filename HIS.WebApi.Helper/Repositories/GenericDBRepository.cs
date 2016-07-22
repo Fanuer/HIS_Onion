@@ -11,7 +11,7 @@ using HIS.WebApi.Helper.Models;
 
 namespace HIS.WebApi.Helper.Repositories
 {
-  public abstract class GenericRepository<T, TIdProperty> : IRepositoryAddAndDelete<T, TIdProperty>, IRepositoryFindAll<T>, IRepositoryFindSingle<T, TIdProperty>, IRepositoryUpdate<T, TIdProperty>, ICountAsync<T> where T : class, IEntity<TIdProperty>
+  public abstract class GenericDBRepository<T, TIdProperty> : IRepositoryAddAndDelete<T, TIdProperty>, IRepositoryFindAll<T>, IRepositoryFindSingle<T, TIdProperty>, IRepositoryUpdate<T, TIdProperty>, ICountAsync<T> where T : class, IEntity<TIdProperty>
   {
     #region Field
 
@@ -19,7 +19,7 @@ namespace HIS.WebApi.Helper.Repositories
 
     #region Ctor
 
-    protected GenericRepository(DbContext ctx)
+    protected GenericDBRepository(DbContext ctx)
     {
       DBContext = ctx;
     }

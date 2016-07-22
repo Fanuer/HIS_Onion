@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Core.Common.CommandTrees;
-using System.Data.Entity.Infrastructure.DependencyResolution;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using HIS.WebApi.Helper.Models;
 
-namespace HIS.WebApi.Helper.Repositories
+namespace HIS.Api.Repositories
 {
   public class AuthContext: DbContext
   {

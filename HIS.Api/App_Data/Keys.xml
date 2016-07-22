@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<data>
+  <connectionString name="AuthContext" connectionString="server=localhost;database=TokenManagement;Trusted_Connection=True;" providerName="System.Data.SqlClient" isProductive="true"/>
+</data>

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace HIS.WebApi.Helper.Models
+namespace HIS.Api.Models
 {
   [XmlRoot("data")]
   public class Keys

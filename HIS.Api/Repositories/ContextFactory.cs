@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Hosting;
 using System.Xml;
 using System.Xml.Serialization;
+using HIS.Api.Models;
 using HIS.WebApi.Helper.Interfaces.Repository;
 using HIS.WebApi.Helper.Models;
 
-namespace HIS.WebApi.Helper.Repositories
+namespace HIS.Api.Repositories
 {
   public class ContextFactory
   {
@@ -44,10 +42,7 @@ namespace HIS.WebApi.Helper.Repositories
       }
     }
 
-    public IApplicationRepository CreateRespository<T>() where T: IApplicationRepository
-    {
-      return 
-    }
+    
 
     private string Filename(params string[] names)
     {

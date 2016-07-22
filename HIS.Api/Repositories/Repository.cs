@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HIS.WebApi.Helper.Interfaces.Repository;
+﻿using HIS.WebApi.Helper.Interfaces.Repository;
 using HIS.WebApi.Helper.Models;
+using HIS.WebApi.Helper.Repositories;
 
-namespace HIS.WebApi.Helper.Repositories
+namespace HIS.Api.Repositories
 {
-  public class Repository : IApplicationRepository
+  public class Repository : IApplicationRepository<int>
   {
     #region FIELDS
     private readonly AuthContext _ctx;
@@ -21,8 +16,8 @@ namespace HIS.WebApi.Helper.Repositories
     private Repository()
     {
       _ctx = ContextFactory.Instance.CreateContext();
-      RefreshTokens = new RefreshTokenRepository(_ctx);
-      Clients = new ClientRepository(_ctx);
+      RefreshTokens = new RefreshTokenDbRepository(_ctx);
+      Clients = new ClientDbRepository(_ctx);
     }
     #endregion
 
@@ -61,17 +56,17 @@ namespace HIS.WebApi.Helper.Repositories
 
     #region Nested
 
-    internal class RefreshTokenRepository : GenericRepository<RefreshToken, string>, IRefreshTokenRepository
+    internal class RefreshTokenDbRepository : GenericDBRepository<RefreshToken, string>, IRefreshTokenRepository
     {
       #region Ctor
-      public RefreshTokenRepository(AuthContext ctx) : base(ctx) { }
+      public RefreshTokenDbRepository(AuthContext ctx) : base(ctx) { }
       #endregion
     }
 
-    internal class ClientRepository : GenericRepository<Client, string>, IClientRepository
+    internal class ClientDbRepository : GenericDBRepository<Client, string>, IClientRepository
     {
       #region Ctor
-      public ClientRepository(AuthContext ctx) : base(ctx) { }
+      public ClientDbRepository(AuthContext ctx) : base(ctx) { }
       #endregion
     }
 

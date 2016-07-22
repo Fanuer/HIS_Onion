@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web.Http;
+using AutoMapper;
+using HIS.Api.Provider;
+using HIS.Api.Repositories;
 using HIS.WebApi.Helper.Repositories;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
+using Onion.Client;
 using Owin;
 
 [assembly: OwinStartup(typeof(HIS.Api.Startup))]
@@ -19,6 +23,11 @@ namespace HIS.Api
       HttpConfiguration httpConfig = new HttpConfiguration();
 
       //ConfigureAuth(app);
+    }
+
+    private ConfigureAutomapper(IAppBuilder app)
+    {
+      app.CreatePerOwinContext(AutoMapperConfigFactory.Instance.Create().CreateMapper);
     }
 
     /// <summary>
