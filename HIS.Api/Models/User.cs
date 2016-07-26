@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Web;
-using HIS.WebApi.Helper.Interfaces;
+using HIS.WebApi.Auth.Base.Interfaces;
 
-namespace HIS.Api.Models
+namespace HIS.WebApi.Auth.Models
 {
   public class User: IUser<int>
   {

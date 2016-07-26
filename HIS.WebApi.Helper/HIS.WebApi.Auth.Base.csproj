@@ -7,8 +7,8 @@
     <ProjectGuid>{B8FF072A-C2D6-4DB8-B8CD-98D2ECD64E1F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HIS.WebApi.Helper</RootNamespace>
-    <AssemblyName>HIS.WebApi.Helper</AssemblyName>
+    <RootNamespace>HIS.WebApi.Auth.Base</RootNamespace>
+    <AssemblyName>HIS.WebApi.Auth.Base</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -72,6 +72,7 @@
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\RefreshToken.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AuthContext.cs" />
     <Compile Include="Repositories\GenericDBRepository.cs" />
   </ItemGroup>
   <ItemGroup>

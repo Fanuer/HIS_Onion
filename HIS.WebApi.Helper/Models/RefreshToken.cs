@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HIS.WebApi.Helper.Interfaces;
+using HIS.WebApi.Auth.Base.Interfaces;
 
-namespace HIS.WebApi.Helper.Models
+namespace HIS.WebApi.Auth.Base.Models
 {
   public class RefreshToken:IEntity<string>
   {

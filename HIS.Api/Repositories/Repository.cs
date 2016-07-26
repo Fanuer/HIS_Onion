@@ -1,8 +1,8 @@
-﻿using HIS.WebApi.Helper.Interfaces.Repository;
-using HIS.WebApi.Helper.Models;
-using HIS.WebApi.Helper.Repositories;
+﻿using HIS.WebApi.Auth.Base.Interfaces.Repository;
+using HIS.WebApi.Auth.Base.Models;
+using HIS.WebApi.Auth.Base.Repositories;
 
-namespace HIS.Api.Repositories
+namespace HIS.WebApi.Auth.Repositories
 {
   public class Repository : IApplicationRepository<int>
   {

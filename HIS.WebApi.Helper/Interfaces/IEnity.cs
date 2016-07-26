@@ -1,4 +1,4 @@
-﻿namespace HIS.WebApi.Helper.Interfaces
+﻿namespace HIS.WebApi.Auth.Base.Interfaces
 {
   public interface IEntity<T>
   {

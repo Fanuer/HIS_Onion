@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace HIS.WebApi.Helper.Interfaces.MultiId
+namespace HIS.WebApi.Auth.Base.Interfaces.MultiId
 {
     public interface IRepositoryAddAndDeleteMultiId<T, in TIdProperty> where T : IEntity<TIdProperty>
     {

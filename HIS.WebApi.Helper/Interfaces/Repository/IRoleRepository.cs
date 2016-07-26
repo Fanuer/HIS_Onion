@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HIS.WebApi.Helper.Interfaces.SingleId;
+﻿using HIS.WebApi.Auth.Base.Interfaces.SingleId;
 
-namespace HIS.WebApi.Helper.Interfaces.Repository
+namespace HIS.WebApi.Auth.Base.Interfaces.Repository
 {
   public interface IRoleRepository<TKey>:
       IRepositoryFindSingle<IRole<TKey>, TKey>, IRepositoryAddAndDelete<IRole<TKey>, TKey>, IRepositoryFindAll<IRole<TKey>>, IRepositoryUpdate<IRole<TKey>, TKey>

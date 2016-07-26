@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HIS.Api</RootNamespace>
-    <AssemblyName>HIS.Api</AssemblyName>
+    <RootNamespace>HIS.WebApi.Auth</RootNamespace>
+    <AssemblyName>HIS.WebApi.Auth</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -196,8 +196,6 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider\CustomOAuthProvider.cs" />
-    <Compile Include="Repositories\AuthContext.cs" />
-    <Compile Include="Repositories\ContextFactory.cs" />
     <Compile Include="Repositories\OnionUserRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Startup.cs" />
@@ -216,9 +214,9 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HIS.WebApi.Helper\HIS.WebApi.Helper.csproj">
+    <ProjectReference Include="..\HIS.WebApi.Helper\HIS.WebApi.Auth.Base.csproj">
       <Project>{b8ff072a-c2d6-4db8-b8cd-98d2ecd64e1f}</Project>
-      <Name>HIS.WebApi.Helper</Name>
+      <Name>HIS.WebApi.Auth.Base</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

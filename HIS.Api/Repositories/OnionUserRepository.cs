@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using AutoMapper;
-using HIS.WebApi.Helper.Interfaces;
-using HIS.WebApi.Helper.Interfaces.Repository;
-using HIS.WebApi.Helper.Interfaces.SingleId;
+using HIS.WebApi.Auth.Base.Interfaces;
+using HIS.WebApi.Auth.Base.Interfaces.Repository;
 using Onion.Client;
-using IUser = HIS.WebApi.Helper.Interfaces.IUser<int>;
 
-namespace HIS.Api.Repositories
+namespace HIS.WebApi.Auth.Repositories
 {
   public class OnionUserRepository:IUserRepository<int>
   {

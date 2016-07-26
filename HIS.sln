@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Editor", "HIS.Editor\HIS.Editor.csproj", "{1B960184-59A8-423E-85D3-1FB1A92BB126}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Api", "HIS.Api\HIS.Api.csproj", "{CEC0AB76-0843-41A8-B1CF-248B046486C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.WebApi.Auth", "HIS.Api\HIS.WebApi.Auth.csproj", "{CEC0AB76-0843-41A8-B1CF-248B046486C8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Preview", "HIS.Preview\HIS.Preview.csproj", "{2DA11C97-0B36-4673-9AFC-4479FDFAE389}"
 EndProject
@@ -13,9 +13,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.InformationServer", "HI
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{0A9D6872-4F74-4E7F-A8AC-38A83E74313C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.WebApi.Helper", "HIS.WebApi.Helper\HIS.WebApi.Helper.csproj", "{B8FF072A-C2D6-4DB8-B8CD-98D2ECD64E1F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.WebApi.Auth.Base", "HIS.WebApi.Helper\HIS.WebApi.Auth.Base.csproj", "{B8FF072A-C2D6-4DB8-B8CD-98D2ECD64E1F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.ImageServer", "HIS.ImageServer\HIS.ImageServer.csproj", "{632AD62D-DB62-40AD-94EC-178D58142602}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.WebApi.Auth.Base.Test", "HIS.WebApi.Helper.Test\HIS.WebApi.Auth.Base.Test.csproj", "{F64BAFCD-66BE-484B-A64E-C687D27C1359}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{632AD62D-DB62-40AD-94EC-178D58142602}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{632AD62D-DB62-40AD-94EC-178D58142602}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{632AD62D-DB62-40AD-94EC-178D58142602}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F64BAFCD-66BE-484B-A64E-C687D27C1359}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F64BAFCD-66BE-484B-A64E-C687D27C1359}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F64BAFCD-66BE-484B-A64E-C687D27C1359}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F64BAFCD-66BE-484B-A64E-C687D27C1359}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,5 +60,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{CEC0AB76-0843-41A8-B1CF-248B046486C8} = {0A9D6872-4F74-4E7F-A8AC-38A83E74313C}
 		{B8FF072A-C2D6-4DB8-B8CD-98D2ECD64E1F} = {0A9D6872-4F74-4E7F-A8AC-38A83E74313C}
+		{F64BAFCD-66BE-484B-A64E-C687D27C1359} = {0A9D6872-4F74-4E7F-A8AC-38A83E74313C}
 	EndGlobalSection
 EndGlobal

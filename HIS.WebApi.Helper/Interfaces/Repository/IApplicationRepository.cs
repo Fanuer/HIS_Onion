@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HIS.WebApi.Helper.Interfaces.Repository
+namespace HIS.WebApi.Auth.Base.Interfaces.Repository
 {
   public interface IApplicationRepository<TUserKey, TRoleKey> : IDisposable
   {

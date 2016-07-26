@@ -1,7 +1,8 @@
-﻿using System.Data.Entity;
-using HIS.WebApi.Helper.Models;
+﻿using System;
+using System.Data.Entity;
+using HIS.WebApi.Auth.Base.Models;
 
-namespace HIS.Api.Repositories
+namespace HIS.WebApi.Auth.Base.Repositories
 {
   public class AuthContext: DbContext
   {
@@ -9,18 +10,18 @@ namespace HIS.Api.Repositories
     #endregion
 
     #region Ctor
-    public AuthContext(string connectionString)
-      : base(connectionString)
+    public AuthContext()
+      : base("AuthContext")
     {
       this.Database.Log = Console.WriteLine;
       Configuration.ProxyCreationEnabled = false;
       Configuration.LazyLoadingEnabled = false;
     }
-
+    
     #endregion
     
     #region Properties
-    public DbSet<Client> Audiences { get; set; }
+    public DbSet<Client> Clients { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     #endregion

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
-using System.Web;
 using AutoMapper;
-using HIS.Api.Models;
-using HIS.WebApi.Helper.Interfaces;
+using HIS.WebApi.Auth.Base.Interfaces;
+using HIS.WebApi.Auth.Models;
 
-
-namespace HIS.Api
+namespace HIS.WebApi.Auth
 {
   public class AutoMapperConfigFactory
   {

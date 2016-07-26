@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Web.Http;
-using AutoMapper;
-using HIS.Api.Provider;
-using HIS.Api.Repositories;
-using HIS.WebApi.Helper.Repositories;
+using HIS.WebApi.Auth;
+using HIS.WebApi.Auth.Provider;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
-using Onion.Client;
 using Owin;
 
-[assembly: OwinStartup(typeof(HIS.Api.Startup))]
+[assembly: OwinStartup(typeof(Startup))]
 
-namespace HIS.Api
+namespace HIS.WebApi.Auth
 {
   public partial class Startup
   {

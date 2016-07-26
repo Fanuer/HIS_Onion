@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace HIS.Api.Models
+namespace HIS.WebApi.Auth.Models
 {
   [XmlRoot("data")]
   public class Keys

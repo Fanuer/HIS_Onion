@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using HIS.WebApi.Helper.Interfaces;
-using HIS.WebApi.Helper.Interfaces.SingleId;
-using HIS.WebApi.Helper.Models;
+using HIS.WebApi.Auth.Base.Interfaces;
+using HIS.WebApi.Auth.Base.Interfaces.SingleId;
 
-namespace HIS.WebApi.Helper.Repositories
+namespace HIS.WebApi.Auth.Base.Repositories
 {
   public abstract class GenericDBRepository<T, TIdProperty> : IRepositoryAddAndDelete<T, TIdProperty>, IRepositoryFindAll<T>, IRepositoryFindSingle<T, TIdProperty>, IRepositoryUpdate<T, TIdProperty>, ICountAsync<T> where T : class, IEntity<TIdProperty>
   {

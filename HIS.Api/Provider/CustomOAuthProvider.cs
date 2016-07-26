@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
-using HIS.Api.Repositories;
-using HIS.WebApi.Helper.Repositories;
+using HIS.WebApi.Auth.Repositories;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using Onion.Client;
 using IUser = Onion.Client.IUser;
 
-namespace HIS.Api.Provider
+namespace HIS.WebApi.Auth.Provider
 {
   public class CustomOAuthProvider : OAuthAuthorizationServerProvider
   {
