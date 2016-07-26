@@ -18,7 +18,7 @@ namespace HIS.WebApi.Auth.Base.Test
       var mockContext = new Mock<AuthContext>();
       mockContext.Setup(m => m.RefreshTokens).Returns(mockSet.Object);
 
-      var 
+      
     }
   }
 }
