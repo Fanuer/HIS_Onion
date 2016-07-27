@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Runtime.CompilerServices;
 using HIS.WebApi.Auth.Base.Models;
 
 namespace HIS.WebApi.Auth.Base.Repositories
 {
-  public class AuthContext: DbContext
+  internal class BearerDbContext: DbContext
   {
     #region Fields
     #endregion
 
     #region Ctor
-    public AuthContext()
-      : base("AuthContext")
+    public BearerDbContext(string nameOrConnectionString = "AuthContext")
+      : base(nameOrConnectionString)
     {
       this.Database.Log = Console.WriteLine;
       Configuration.ProxyCreationEnabled = false;

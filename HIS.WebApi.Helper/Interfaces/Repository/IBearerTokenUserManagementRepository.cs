@@ -2,13 +2,9 @@
 
 namespace HIS.WebApi.Auth.Base.Interfaces.Repository
 {
-  public interface IApplicationRepository<TUserKey, TRoleKey> : IDisposable
+  public interface IBearerTokenUserManagementRepository<TUserKey, TRoleKey> : IUserManagementRepository<TUserKey, TRoleKey>
   {
     IClientRepository Clients { get; }
     IRefreshTokenRepository RefreshTokens { get; }
-
-    IUserRepository<TUserKey> Users { get; }
-
-    IRoleRepository<TRoleKey> Roles { get; }
   }
 }

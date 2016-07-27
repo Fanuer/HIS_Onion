@@ -197,7 +197,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider\CustomOAuthProvider.cs" />
     <Compile Include="Repositories\OnionUserRepository.cs" />
-    <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -67,8 +67,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="RefreshTokenTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\RefreshTokenTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

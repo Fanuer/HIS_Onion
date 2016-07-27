@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using HIS.WebApi.Auth.Base;
+using HIS.WebApi.Auth.Base.Repositories;
 using HIS.WebApi.Auth.Repositories;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -47,7 +49,7 @@ namespace HIS.WebApi.Auth.Provider
       }
       else if (!context.HasError)
       {
-        var audience = await Repository.Instance.Clients.FindAsync(context.ClientId);
+        var audience = await BearerUserRepository.Instance.Clients.FindAsync(context.ClientId);
         if (audience == null)
         {
           context.SetError("invalid_clientId", $"Client '{context.ClientId}' is not registered in the system.");
@@ -85,7 +87,7 @@ namespace HIS.WebApi.Auth.Provider
           return;
         }
 
-        var repo = Repository.Instance.RefreshTokens;
+        var repo = BearerUserRepository.Instance.RefreshTokens;
         var allTokens = await repo.GetAllAsync();
         var oldtokens = allTokens.Where(x => x.ExpiresUtc < DateTime.UtcNow || x.Subject.Equals(context.UserName)).ToList();
         foreach (var token in oldtokens)
