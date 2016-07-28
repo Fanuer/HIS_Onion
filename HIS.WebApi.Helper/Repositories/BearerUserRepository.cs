@@ -2,7 +2,6 @@
 using System.Data.Entity;
 using HIS.WebApi.Auth.Base.Interfaces.Repository;
 using HIS.WebApi.Auth.Base.Models;
-using Microsoft.AspNet.Identity;
 
 namespace HIS.WebApi.Auth.Base.Repositories
 {
@@ -26,6 +25,7 @@ namespace HIS.WebApi.Auth.Base.Repositories
 
     internal BearerUserRepository(BearerDbContext ctx)
     {
+      _ctx = ctx;
       RefreshTokens = new RefreshTokenDbRepository(_ctx);
       Clients = new ClientDbRepository(_ctx);
     }
@@ -94,14 +94,14 @@ namespace HIS.WebApi.Auth.Base.Repositories
 
     #region Nested
 
-    internal class RefreshTokenDbRepository : GenericDBRepository<RefreshToken, string>, IRefreshTokenRepository
+    internal class RefreshTokenDbRepository : GenericDbRepository<RefreshToken, string>, IRefreshTokenRepository
     {
       #region Ctor
       public RefreshTokenDbRepository(BearerDbContext ctx) : base(ctx) { }
       #endregion
     }
 
-    internal class ClientDbRepository : GenericDBRepository<Client, string>, IClientRepository
+    internal class ClientDbRepository : GenericDbRepository<Client, string>, IClientRepository
     {
       #region Ctor
       public ClientDbRepository(BearerDbContext ctx) : base(ctx) { }

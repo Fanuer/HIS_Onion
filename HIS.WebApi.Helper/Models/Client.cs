@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using HIS.WebApi.Auth.Base.Interfaces;
 
 namespace HIS.WebApi.Auth.Base.Models
 {
-  public class Client : IEntity<string>
+  public class Client : IEntity<string>, ICloneable
   {
     #region Ctor
 
@@ -40,5 +41,10 @@ namespace HIS.WebApi.Auth.Base.Models
     [MaxLength(100)]
     public string AllowedOrigin { get; set; }
     #endregion
+
+    public object Clone()
+    {
+      return new Client(this.Id, this.Secret, this.Name, this.AllowedOrigin, this.Active);
+    }
   }
 }

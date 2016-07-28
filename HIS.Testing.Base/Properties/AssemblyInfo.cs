@@ -5,16 +5,14 @@ using System.Runtime.InteropServices;
 // Allgemeine Informationen über eine Assembly werden über die folgenden 
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
-[assembly: AssemblyTitle("HIS.WebApi.Helper")]
+[assembly: AssemblyTitle("HIS.Testing.Base")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("HIS.WebApi.Helper")]
+[assembly: AssemblyProduct("HIS.Testing.Base")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: InternalsVisibleTo("HIS.WebApi.Auth.Base.Test")]
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 
 // Durch Festlegen von ComVisible auf "false" werden die Typen in dieser Assembly unsichtbar 
 // für COM-Komponenten.  Wenn Sie auf einen Typ in dieser Assembly von 
@@ -22,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM verfügbar gemacht wird
-[assembly: Guid("b8ff072a-c2d6-4db8-b8cd-98d2ecd64e1f")]
+[assembly: Guid("cfcc12c5-6469-47e5-bac3-6eb89c8efa7c")]
 
 // Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
 //

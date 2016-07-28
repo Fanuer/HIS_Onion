@@ -14,7 +14,7 @@ using Moq;
 namespace HIS.WebApi.Auth.Base.Test.Tests
 {
   [TestClass]
-  public class RefreshTokenTests
+  public class ClientTests
   {
     #region FIELDS
     #endregion
@@ -27,47 +27,46 @@ namespace HIS.WebApi.Auth.Base.Test.Tests
     [TestInitialize]
     public void Init()
     {
-      this.SingleObject = new RefreshToken()
+      this.SingleObject = new Client()
       {
-        ClientId = "Test",
-        ExpiresUtc = DateTime.UtcNow.AddMonths(6),
-        IssuedUtc = DateTime.UtcNow.AddMinutes(-6),
         Id = "1",
-        Subject = "TestUser",
-        ProtectedTicket = ""
+        Active = true,
+        Name = "",
+        AllowedOrigin = "*",
+        Secret = ""
       };
 
 
-      var first = (RefreshToken) this.SingleObject.Clone();
-      var second = (RefreshToken) this.SingleObject.Clone();
+      var first = (Client) this.SingleObject.Clone();
+      var second = (Client) this.SingleObject.Clone();
       second.Id = "2";
-      var third = (RefreshToken) this.SingleObject.Clone();
+      var third = (Client) this.SingleObject.Clone();
       third.Id = "3";
 
-      this.MultipleObjects = new ObservableCollection<RefreshToken>()
+      this.MultipleObjects = new ObservableCollection<Client>()
       {
         first,
         second,
         third
       };
 
-      this.DbSet = new Mock<DbSet<RefreshToken>>();
-      DbSet.As<IQueryable<RefreshToken>>().Setup(m => m.ElementType).Returns(MultipleObjects.AsQueryable().ElementType);
-      DbSet.As<IQueryable<RefreshToken>>().Setup(m => m.Expression).Returns(MultipleObjects.AsQueryable().Expression);
-      DbSet.As<IQueryable<RefreshToken>>().Setup(m => m.GetEnumerator()).Returns(MultipleObjects.GetEnumerator());
+      this.DbSet = new Mock<DbSet<Client>>();
+      DbSet.As<IQueryable<Client>>().Setup(m => m.ElementType).Returns(MultipleObjects.AsQueryable().ElementType);
+      DbSet.As<IQueryable<Client>>().Setup(m => m.Expression).Returns(MultipleObjects.AsQueryable().Expression);
+      DbSet.As<IQueryable<Client>>().Setup(m => m.GetEnumerator()).Returns(MultipleObjects.GetEnumerator());
       DbSet.Setup(t => t.FindAsync(It.IsAny<string>())).ReturnsAsync(this.SingleObject);
 
-      DbSet.As<IDbAsyncEnumerable<RefreshToken>>()
+      DbSet.As<IDbAsyncEnumerable<Client>>()
                 .Setup(m => m.GetAsyncEnumerator())
-                .Returns(new TestDbAsyncEnumerator<RefreshToken>(MultipleObjects.GetEnumerator()));
+                .Returns(new TestDbAsyncEnumerator<Client>(MultipleObjects.GetEnumerator()));
 
-      DbSet.As<IQueryable<RefreshToken>>()
+      DbSet.As<IQueryable<Client>>()
           .Setup(m => m.Provider)
-          .Returns(new TestDbAsyncQueryProvider<RefreshToken>(MultipleObjects.AsQueryable().Provider));
+          .Returns(new TestDbAsyncQueryProvider<Client>(MultipleObjects.AsQueryable().Provider));
 
       this.Context = new Mock<BearerDbContext>();
-      this.Context.Setup(m => m.RefreshTokens).Returns(this.DbSet.Object);
-      this.Context.Setup(m => m.Set<RefreshToken>()).Returns(this.DbSet.Object);
+      this.Context.Setup(m => m.Clients).Returns(this.DbSet.Object);
+      this.Context.Setup(m => m.Set<Client>()).Returns(this.DbSet.Object);
       this.Context.Setup(c => c.SaveChangesAsync()).Returns(() => Task.Run(() => 1)).Verifiable();
     }
 
@@ -76,7 +75,7 @@ namespace HIS.WebApi.Auth.Base.Test.Tests
     {
       using (var rep = new BearerUserRepository<string, int>(this.Context.Object))
       {
-        var element= await rep.RefreshTokens.FindAsync(this.SingleObject.Id);
+        var element= await rep.Clients.FindAsync(this.SingleObject.Id);
         Assert.IsNotNull(element);
         Assert.AreEqual(element, this.SingleObject);
       }
@@ -87,7 +86,7 @@ namespace HIS.WebApi.Auth.Base.Test.Tests
     {
       using (var rep = new BearerUserRepository<string, int>(this.Context.Object))
       {
-        var elements = await rep.RefreshTokens.GetAllAsync();
+        var elements = await rep.Clients.GetAllAsync();
         Assert.IsNotNull(elements);
         Assert.AreEqual(elements.Count(), MultipleObjects.Count);
       }
@@ -98,9 +97,9 @@ namespace HIS.WebApi.Auth.Base.Test.Tests
     {
       using (var rep = new BearerUserRepository<string, int>(this.Context.Object))
       {
-        var exists = await rep.RefreshTokens.ExistsAsync("3");
+        var exists = await rep.Clients.ExistsAsync("3");
         Assert.IsTrue(exists);
-        exists = await rep.RefreshTokens.ExistsAsync("4");
+        exists = await rep.Clients.ExistsAsync("4");
         Assert.IsFalse(exists);
       }
     }
@@ -110,11 +109,11 @@ namespace HIS.WebApi.Auth.Base.Test.Tests
     {
       using (var rep = new BearerUserRepository<string, int>(this.Context.Object))
       {
-        var newRT = (RefreshToken) this.SingleObject.Clone();
+        var newRT = (Client) this.SingleObject.Clone();
         newRT.Id = "4";
-        var addedSuccessfully = await rep.RefreshTokens.AddAsync(newRT);
+        var addedSuccessfully = await rep.Clients.AddAsync(newRT);
 
-        this.DbSet.Verify(m => m.Add(It.IsAny<RefreshToken>()), Times.Once());
+        this.DbSet.Verify(m => m.Add(It.IsAny<Client>()), Times.Once());
         this.Context.Verify(m => m.SaveChangesAsync(), Times.Once());
         Assert.IsTrue(addedSuccessfully);
       }
@@ -126,7 +125,7 @@ namespace HIS.WebApi.Auth.Base.Test.Tests
     {
       using (var rep = new BearerUserRepository<string, int>(this.Context.Object))
       { 
-        var addedSuccessfully = await rep.RefreshTokens.AddAsync(null);
+        var addedSuccessfully = await rep.Clients.AddAsync(null);
         Assert.Fail();
       }
     }
@@ -136,9 +135,9 @@ namespace HIS.WebApi.Auth.Base.Test.Tests
     {
       using (var rep = new BearerUserRepository<string, int>(this.Context.Object))
       {
-        var removedSuccessfully = await rep.RefreshTokens.RemoveAsync(this.SingleObject);
+        var removedSuccessfully = await rep.Clients.RemoveAsync(this.SingleObject);
 
-        this.DbSet.Verify(m => m.Remove(It.IsAny<RefreshToken>()), Times.Once());
+        this.DbSet.Verify(m => m.Remove(It.IsAny<Client>()), Times.Once());
         this.Context.Verify(m => m.SaveChangesAsync(), Times.Once());
         Assert.IsTrue(removedSuccessfully);
       }
@@ -150,8 +149,8 @@ namespace HIS.WebApi.Auth.Base.Test.Tests
     {
       using (var rep = new BearerUserRepository<string, int>(this.Context.Object))
       {
-        RefreshToken removeObject = null;
-        await rep.RefreshTokens.RemoveAsync(removeObject);
+        Client removeObject = null;
+        await rep.Clients.RemoveAsync(removeObject);
         Assert.Fail();
       }
     }
@@ -161,11 +160,9 @@ namespace HIS.WebApi.Auth.Base.Test.Tests
     #region PROPERTIES
 
     private Mock<BearerDbContext> Context { get; set; }
-    private Mock<DbSet<RefreshToken>> DbSet { get; set; }
-
-    private RefreshToken SingleObject { get; set; }
-
-    private ObservableCollection<RefreshToken> MultipleObjects { get; set; }
+    private Mock<DbSet<Client>> DbSet { get; set; }
+    private Client SingleObject { get; set; }
+    private ObservableCollection<Client> MultipleObjects { get; set; }
 
     #endregion
 

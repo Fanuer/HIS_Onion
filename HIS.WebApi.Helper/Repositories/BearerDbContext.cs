@@ -11,6 +11,9 @@ namespace HIS.WebApi.Auth.Base.Repositories
     #endregion
 
     #region Ctor
+
+    internal BearerDbContext() : this("AuthContext"){}
+
     public BearerDbContext(string nameOrConnectionString = "AuthContext")
       : base(nameOrConnectionString)
     {
@@ -22,8 +25,8 @@ namespace HIS.WebApi.Auth.Base.Repositories
     #endregion
     
     #region Properties
-    public DbSet<Client> Clients { get; set; }
-    public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public virtual DbSet<Client> Clients { get; set; }
+    public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
 
     #endregion
   }
