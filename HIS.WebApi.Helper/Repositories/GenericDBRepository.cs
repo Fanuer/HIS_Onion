@@ -45,7 +45,6 @@ namespace HIS.WebApi.Auth.Base.Repositories
           await RemoveAsync(existingModel);
         }
         this.DBContext.Set<T>().Add(model);
-        //this.DBContext.Set(typeof(T)).Add(model);
         result = await DBContext.SaveChangesAsync() > 0;
       }
       catch (Exception e)
@@ -65,7 +64,7 @@ namespace HIS.WebApi.Auth.Base.Repositories
     {
       if (model == null)
       {
-        throw new ArgumentNullException("model");
+        throw new ArgumentNullException(nameof(model));
       }
       this.DBContext.Set<T>().Remove(model);
       return await this.DBContext.SaveChangesAsync() > 0;
@@ -120,19 +119,7 @@ namespace HIS.WebApi.Auth.Base.Repositories
 
     public async Task<int> CountAsync<T>() where T : class
     {
-      DbSet<T> dbset = GetTypedDBSet<T>();
-      var count = await dbset.CountAsync();
-      return count;
-    }
-
-
-    protected DbSet<T> GetTypedDBSet<T>() where T : class
-    {
-      return (DbSet<T>)this.DBContext
-                           .GetType()
-                           .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                           .First(x => x.PropertyType.GenericTypeArguments.Contains(typeof(T)))
-                           .GetValue(this.DBContext);
+      return await DBContext.Set<T>().CountAsync();
     }
 
     #endregion

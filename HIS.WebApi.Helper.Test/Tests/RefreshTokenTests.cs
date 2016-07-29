@@ -68,7 +68,7 @@ namespace HIS.WebApi.Auth.Base.Test.Tests
       this.Context = new Mock<BearerDbContext>();
       this.Context.Setup(m => m.RefreshTokens).Returns(this.DbSet.Object);
       this.Context.Setup(m => m.Set<RefreshToken>()).Returns(this.DbSet.Object);
-      this.Context.Setup(c => c.SaveChangesAsync()).Returns(() => Task.Run(() => 1)).Verifiable();
+      this.Context.Setup(x => x.SaveChangesAsync()).ReturnsAsync(1).Verifiable();
     }
 
     [TestMethod]
@@ -115,7 +115,16 @@ namespace HIS.WebApi.Auth.Base.Test.Tests
         var addedSuccessfully = await rep.RefreshTokens.AddAsync(newRT);
 
         this.DbSet.Verify(m => m.Add(It.IsAny<RefreshToken>()), Times.Once());
-        this.Context.Verify(m => m.SaveChangesAsync(), Times.Once());
+        try
+        {
+          this.Context.Verify(m => m.SaveChangesAsync(), Times.Once());
+        }
+        catch (Exception e)
+        {
+          
+          throw e;
+        }
+        
         Assert.IsTrue(addedSuccessfully);
       }
     }
