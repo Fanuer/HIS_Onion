@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using HIS.WebApi.Auth.Base.Interfaces;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace HIS.WebApi.Auth.Models
 {
-  public class User: IUser<int>
+  public class User: IdentityUser<int, IdentityUserLogin<int>, IdentityUserRole<int>, IdentityUserClaim<int>>, Base.Interfaces.IUser<int>
   {
     #region FIELDS
 
@@ -16,7 +20,7 @@ namespace HIS.WebApi.Auth.Models
 
     private User()
     {
-      this.Claims = new List<Claim>();
+      this.Claims = new Collection<IdentityUserClaim>();
     }
 
     public User(int id):this()
@@ -24,7 +28,7 @@ namespace HIS.WebApi.Auth.Models
       this.Id = id;
     }
 
-    public User(int id, string userName, string displayName="", IEnumerable<Claim> claims= null):this(id)
+    public User(int id, string userName, string displayName="", Collection<IdentityUserClaim> claims = null):this(id)
     {
       if (String.IsNullOrWhiteSpace(userName)){throw new ArgumentNullException(nameof(userName));}
       UserName = userName;
@@ -45,7 +49,8 @@ namespace HIS.WebApi.Auth.Models
 
     public string UserName { get; set; }
 
-    public IEnumerable<Claim> Claims { get; set; }
+    public ICollection<IdentityUserClaim> Claims { get; set; }
+
     public string DisplayName
     {
       get
@@ -56,6 +61,11 @@ namespace HIS.WebApi.Auth.Models
       {
         this._displayName = value;
       }
+    }
+
+    public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<Base.Interfaces.IUser<string>> manager, string authenticationType)
+    {
+      throw new NotImplementedException();
     }
 
     #endregion

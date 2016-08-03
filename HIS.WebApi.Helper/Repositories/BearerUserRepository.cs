@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Data.Entity;
+using HIS.WebApi.Auth.Base.Interfaces;
 using HIS.WebApi.Auth.Base.Interfaces.Repository;
 using HIS.WebApi.Auth.Base.Models;
 
 namespace HIS.WebApi.Auth.Base.Repositories
 {
-  public class BearerUserRepository<TUserKey, TRoleKey> : IBearerTokenUserManagementRepository<TUserKey, TRoleKey>
+  public class BearerUserRepository<TUser, TRole>
+    : IBearerTokenUserManagementRepository<TUser, TRole>
+      where TUser : class, IUser<string>
+      where TRole : class, IRole<string>
   {
     #region FIELDS
     private readonly BearerDbContext _ctx;
-    private static IBearerTokenUserManagementRepository<TUserKey, TRoleKey> _instance;
+    private static IBearerTokenUserManagementRepository<TUser, TRole> _instance;
     #endregion
 
     #region CTOR
@@ -30,7 +34,7 @@ namespace HIS.WebApi.Auth.Base.Repositories
       Clients = new ClientDbRepository(_ctx);
     }
 
-    public BearerUserRepository(IUserRepository<TUserKey> userRep, IRoleRepository<TRoleKey> roleRep, string bearerDbContextNameOrConnectionString="AuthContext") 
+    public BearerUserRepository(IUserRepository<TUser> userRep, IRoleRepository<TRole> roleRep, string bearerDbContextNameOrConnectionString="AuthContext") 
       : this(bearerDbContextNameOrConnectionString)
     {
       if (userRep == null) { throw new ArgumentNullException(nameof(userRep)); }
@@ -41,7 +45,7 @@ namespace HIS.WebApi.Auth.Base.Repositories
       this.Roles = roleRep;
     }
 
-    public BearerUserRepository(IUserRepository<TUserKey> userRep, IRoleRepository<TRoleKey> roleRep, IRefreshTokenRepository refreshTokenRep, IClientRepository clientRep)
+    public BearerUserRepository(IUserRepository<TUser> userRep, IRoleRepository<TRole> roleRep, IRefreshTokenRepository refreshTokenRep, IClientRepository clientRep)
     {
       if (userRep == null){throw new ArgumentNullException(nameof(userRep));}
       if (roleRep == null) { throw new ArgumentNullException(nameof(roleRep)); }
@@ -69,21 +73,21 @@ namespace HIS.WebApi.Auth.Base.Repositories
     public IClientRepository Clients { get; private set; }
     public IRefreshTokenRepository RefreshTokens { get; private set; }
 
-    public IUserRepository<TUserKey> Users { get; private set; }
-    public IRoleRepository<TRoleKey> Roles { get; private set; }
+    public IUserRepository<TUser> Users { get; private set; }
+    public IRoleRepository<TRole> Roles { get; private set; }
 
 
-    public static IBearerTokenUserManagementRepository<TUserKey, TRoleKey> Instance
+    public static IBearerTokenUserManagementRepository<TUser, TRole> Instance
     {
       get
       {
         if (_instance == null)
         {
-          lock (typeof(IBearerTokenUserManagementRepository<TUserKey, TRoleKey>))
+          lock (typeof(IBearerTokenUserManagementRepository<TUser, TRole>))
           {
             if (_instance == null)
             {
-              _instance = new BearerUserRepository<TUserKey, TRoleKey>();
+              _instance = new BearerUserRepository<TUser, TRole>();
             }
           }
         }

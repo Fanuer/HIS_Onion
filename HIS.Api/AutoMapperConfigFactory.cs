@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Security.Claims;
 using AutoMapper;
 using HIS.WebApi.Auth.Base.Interfaces;
 using HIS.WebApi.Auth.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Onion.Client;
 
 namespace HIS.WebApi.Auth
 {
@@ -32,15 +35,15 @@ namespace HIS.WebApi.Auth
       });
     }
 
-    private IUser<int> FromOnionUser(Onion.Client.IUser user)
+    private User FromOnionUser(Onion.Client.IUser user)
     {
-      var claims = new List<Claim>
+      var claims = new Collection<IdentityUserClaim>
       {
-        new Claim("admin", user.IsAdministrator.ToString()),
-        new Claim("editor", user.IsEditor.ToString()),
-        new Claim("live-editor", user.IsEditor.ToString()),
-        new Claim("live-editor", user.IsLiveEditor.ToString()),
-        new Claim("achived", user.IsArchived.ToString())
+        new IdentityUserClaim() {ClaimType = UserRoles.Administrator.ToString(), ClaimValue = user.IsAdministrator.ToString(), UserId = user.Id.ToString()},
+        new IdentityUserClaim() {ClaimType = UserRoles.Editor.ToString(), ClaimValue = user.IsEditor.ToString(), UserId = user.Id.ToString()},
+        new IdentityUserClaim() {ClaimType = UserRoles.LiveEditor.ToString(), ClaimValue = user.IsLiveEditor.ToString(), UserId = user.Id.ToString()},
+        new IdentityUserClaim() {ClaimType = UserRoles.SchemaManager.ToString(), ClaimValue = user.IsSchemaManager.ToString(), UserId = user.Id.ToString()},
+        new IdentityUserClaim() {ClaimType = UserRoles.UserManager.ToString(), ClaimValue = user.IsUserManager.ToString(), UserId = user.Id.ToString()},
       };
 
       return new User(user.Id, user.Name, user.DisplayName, claims);

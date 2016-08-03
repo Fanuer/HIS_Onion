@@ -192,11 +192,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoMapperConfigFactory.cs" />
+    <Compile Include="Exceptions\OnionSessionNotInitialisedException.cs" />
     <Compile Include="Models\Keys.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider\CustomOAuthProvider.cs" />
-    <Compile Include="Repositories\OnionUserRepository.cs" />
+    <Compile Include="Repositories\OnionUserStore.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
