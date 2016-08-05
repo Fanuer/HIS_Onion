@@ -16,8 +16,7 @@ namespace HIS.WebApi.Auth.Repositories
     : IUserStore<User, int>,
      IUserRoleStore<User, int>,
      IQueryableUserStore<User, int>,
-     IUserClaimStore<User, int>,
-     IUserEmailStore<User, int>
+     IUserClaimStore<User, int>
   {
     #region FIELDS
     private bool _disposed = false;
@@ -122,6 +121,7 @@ namespace HIS.WebApi.Auth.Repositories
 
     public Task RemoveFromRoleAsync(User user, string roleName)
     {
+      
       throw new NotImplementedException();
     }
 
@@ -145,35 +145,6 @@ namespace HIS.WebApi.Auth.Repositories
     }
 
     public Task RemoveClaimAsync(User user, Claim claim)
-    {
-      throw new NotImplementedException();
-    }
-
-    #endregion
-
-    #region Member IUserEmailStore
-
-    public Task SetEmailAsync(User user, string email)
-    {
-      throw new NotImplementedException();
-    }
-
-    public Task<string> GetEmailAsync(User user)
-    {
-      throw new NotImplementedException();
-    }
-
-    public Task<bool> GetEmailConfirmedAsync(User user)
-    {
-      throw new NotImplementedException();
-    }
-
-    public Task SetEmailConfirmedAsync(User user, bool confirmed)
-    {
-      throw new NotImplementedException();
-    }
-
-    public Task<User> FindByEmailAsync(string email)
     {
       throw new NotImplementedException();
     }
@@ -213,7 +184,8 @@ namespace HIS.WebApi.Auth.Repositories
 
     #region Nested
 
-    publ
 
-    #endregion}
+
+    #endregion
   }
+}
