@@ -193,15 +193,17 @@
   <ItemGroup>
     <Compile Include="AutoMapperConfigFactory.cs" />
     <Compile Include="Exceptions\OnionSessionNotInitialisedException.cs" />
-    <Compile Include="Models\Keys.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\XMLModels\EnviromentSettings.cs" />
+    <Compile Include="Models\XMLModels\OnionModel.cs" />
+    <Compile Include="Models\XMLModels\XmlUri.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider\CustomOAuthProvider.cs" />
     <Compile Include="Repositories\OnionUserStore.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Keys.xml" />
+    <Content Include="App_Data\EnviromentSettings.xml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -221,6 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interface\" />
+    <Folder Include="Manager\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

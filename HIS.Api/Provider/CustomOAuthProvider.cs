@@ -3,33 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using HIS.WebApi.Auth.Base;
+using System.Web;
+using HIS.WebApi.Auth.Base.Interfaces.Repository;
+using HIS.WebApi.Auth.Base.Models;
+using HIS.WebApi.Auth.Base.Models.Enums;
 using HIS.WebApi.Auth.Base.Repositories;
+using HIS.WebApi.Auth.Models;
 using HIS.WebApi.Auth.Repositories;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
-using Onion.Client;
-using IUser = Onion.Client.IUser;
 
 namespace HIS.WebApi.Auth.Provider
 {
   public class CustomOAuthProvider : OAuthAuthorizationServerProvider
   {
-    #region FIELDS
-
-    private readonly string informationServerUri = "tcp://127.0.0.1:8087/onion/server";
-    private readonly string roleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
-    private readonly string userIdClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
-    private readonly string userNameClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name";
-    #endregion
-
-    #region CTOR
-    #endregion
-
-    #region METHODS
     /// <summary>
-    /// responsible for validating if the Resource server (audience) is already registered in our Authorization server by reading the client_id value from the request
+    /// Validates a client thats tries to access the server.
+    /// Exepts all clients, the api is the onlyclient available and do not allow adding additional clients
     /// </summary>
     /// <param name="context"></param>
     /// <returns></returns>
@@ -37,34 +29,64 @@ namespace HIS.WebApi.Auth.Provider
     {
       string clientId;
       string clientSecret;
+      Client client = null;
 
       if (!context.TryGetBasicCredentials(out clientId, out clientSecret))
       {
         context.TryGetFormCredentials(out clientId, out clientSecret);
       }
 
-      if (context.ClientId == null && String.IsNullOrWhiteSpace(clientId))
+      if (context.ClientId == null || context.ClientId == CustomRefreshTokenProvider.DUMMY_CLIENT)
       {
-        context.SetError("invalid_clientId", "client_Id is not set");
+        //Remove the comments from the below line context.SetError, and invalidate context 
+        //if you want to force sending clientId/secrects once obtain access tokens. 
+        context.Validated();
+        //context.SetError("invalid_clientId", "ClientId should be sent.");
+        return;
       }
-      else if (!context.HasError)
+
+      using (var repo = new BearerUserRepository<User>(new OnionUserStore()))
       {
-        var audience = await BearerUserRepository.Instance.Clients.FindAsync(context.ClientId);
-        if (audience == null)
+        client = await repo.Clients.FindAsync(context.ClientId);
+      }
+
+      if (client == null)
+      {
+        context.SetError("invalid_clientId", $"Client '{context.ClientId}' is not registered in the system.");
+        return;
+      }
+
+      if (client.ApplicationType == ApplicationTypes.NativeConfidential)
+      {
+        if (string.IsNullOrWhiteSpace(clientSecret))
         {
-          context.SetError("invalid_clientId", $"Client '{context.ClientId}' is not registered in the system.");
+          context.SetError("invalid_clientId", "Client secret should be sent.");
+          return;
         }
         else
         {
-          context.OwinContext.Set("as:clientId", clientId);
-          context.OwinContext.Set("as:clientAllowedOrigin", audience.AllowedOrigin);
-          context.Validated();
+          if (client.Secret != Helper.GetHash(clientSecret))
+          {
+            context.SetError("invalid_clientId", "Client secret is invalid.");
+            return;
+          }
         }
       }
+
+      if (!client.Active)
+      {
+        context.SetError("invalid_clientId", "Client is inactive.");
+        return;
+      }
+
+      context.OwinContext.Set("as:clientAllowedOrigin", client.AllowedOrigin);
+      context.OwinContext.Set("as:clientRefreshTokenLifeTime", client.RefreshTokenLifeTime.ToString());
+
+      context.Validated();
     }
 
     /// <summary>
-    /// validating the resource owner (user) credentials
+    /// receiving the username and password from the request and validate them against our ASP.NET 2.1 Identity system
     /// </summary>
     /// <param name="context"></param>
     /// <returns></returns>
@@ -75,44 +97,34 @@ namespace HIS.WebApi.Auth.Provider
       context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
       //Search user by username and password
-      bool isSessionCreated = false;
-      OnionSession session = null;
-      try
-      {
-        session = new OnionSession(informationServerUri, context.UserName, context.Password);
-        isSessionCreated = true;
-        if (!isSessionCreated)
-        {
-          context.SetError("invalid_grant", "The user name or password is incorrect.");
-          return;
-        }
+      var userManager = context.OwinContext.GetUserManager<UserManager<HIS.WebApi.Auth.Base.Interfaces.IUser<string>>>();
+      
+      var user = await userManager.FindAsync(context.UserName, context.Password);
 
-        var repo = BearerUserRepository.Instance.RefreshTokens;
-        var allTokens = await repo.GetAllAsync();
-        var oldtokens = allTokens.Where(x => x.ExpiresUtc < DateTime.UtcNow || x.Subject.Equals(context.UserName)).ToList();
+      if (user == null)
+      {
+        context.SetError("invalid_grant", "The user name or password is incorrect.");
+        return;
+      }
+
+      using (var  repo = new BearerUserRepository<User>())
+      {
+        var oldtokens = (await repo.RefreshTokens.GetAllAsync()).Where(x => x.ExpiresUtc < DateTime.UtcNow || x.Subject.Equals(user.UserName)).ToList();
         foreach (var token in oldtokens)
         {
-          await repo.RemoveAsync(token);
+          await repo.RefreshTokens.RemoveAsync(token);
         }
-
-
-        var clientId = context.OwinContext.Get<string>("as:clientId");
-        var identity = await user.GenerateUserIdentityAsync(userManager, "JWT", clientId);
-        
-        var ticket = new AuthenticationTicket(identity, props);
-        context.Validated(ticket);
-      }
-      catch (Exception)
-      {
-
-      }
-      finally
-      {
-        session?.Dispose();
       }
 
+      // Generate claim and JWT-Ticket 
+      ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager, "JWT");
+      oAuthIdentity.AddClaim(new Claim("userId", oAuthIdentity.GetUserId()));
 
-      session.Dispose();
+      var ticket = new AuthenticationTicket(oAuthIdentity, null);
+
+      //Transfer this identity to an OAuth 2.0 Bearer access ticket
+      context.Validated(ticket);
+
     }
 
     public override Task TokenEndpoint(OAuthTokenEndpointContext context)
@@ -146,6 +158,7 @@ namespace HIS.WebApi.Auth.Provider
 
       // Change auth ticket for refresh token requests
       var newIdentity = new ClaimsIdentity(context.Ticket.Identity);
+      newIdentity.AddClaim(new Claim("newClaim", "newValue"));
 
       var newTicket = new AuthenticationTicket(newIdentity, context.Ticket.Properties);
       context.Validated(newTicket);
@@ -153,36 +166,5 @@ namespace HIS.WebApi.Auth.Provider
       return Task.FromResult<object>(null);
     }
 
-    private ClaimsIdentity GenerateClaims(string username, OnionSession session, string authenticationType)
-    {
-      if (String.IsNullOrWhiteSpace(username)) { throw new ArgumentNullException(nameof(username)); }
-      if (session == null) { throw new ArgumentNullException(nameof(session)); }
-      if (String.IsNullOrWhiteSpace(authenticationType)) { throw new ArgumentNullException(nameof(authenticationType)); }
-
-
-      var factory = new ClaimsIdentityFactory<Microsoft.AspNet.Identity.IUser>();
-      ClaimsIdentity id = new ClaimsIdentity(authenticationType);
-
-      id.AddClaim(new Claim(this.userIdClaimType, user.Id.ToString(), "http://www.w3.org/2001/XMLSchema#string"));
-      id.AddClaim(new Claim(this.userNameClaimType, username, "http://www.w3.org/2001/XMLSchema#string"));
-      id.AddClaim(new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "ASP.NET Identity", "http://www.w3.org/2001/XMLSchema#string"));
-      id.AddClaims(this.GetOnionRoles(user));
-
-      return id;
-    }
-
-    private IEnumerable<Claim> GetOnionRoles(IUser user)
-    {
-      IEnumerable<Claim> result = new List<Claim>();
-      if (user == null){ throw new ArgumentNullException(nameof(user));}
-      return result;
-    }
-
-
-
-    #endregion
-
-      #region PROPERTIES
-      #endregion
-    }
+  }
 }

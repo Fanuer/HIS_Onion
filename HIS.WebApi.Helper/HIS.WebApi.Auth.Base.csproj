@@ -72,9 +72,11 @@
     <Compile Include="Interfaces\Repository\IRoleRepository.cs" />
     <Compile Include="Interfaces\Repository\IUserManagementRepository.cs" />
     <Compile Include="Interfaces\Repository\IUserRepository.cs" />
+    <Compile Include="Interfaces\Repository\IUserRoleStore.cs" />
     <Compile Include="Interfaces\SingleId\IRepositoryAddAndDelete.cs" />
     <Compile Include="Interfaces\SingleId\IRepositoryFindSingle.cs" />
     <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\Enums\ApplicationTypes.cs" />
     <Compile Include="Models\RefreshToken.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -9,6 +10,7 @@ using HIS.WebApi.Auth.Exceptions;
 using HIS.WebApi.Auth.Models;
 using Microsoft.AspNet.Identity;
 using Onion.Client;
+using IUser = Onion.Client.IUser;
 
 namespace HIS.WebApi.Auth.Repositories
 {
@@ -20,16 +22,23 @@ namespace HIS.WebApi.Auth.Repositories
   {
     #region FIELDS
     private bool _disposed = false;
-    private OnionSession _session;
-    private readonly Uri _informationServerUri;
+    private IOnionSession _masterSession;
     #endregion
 
     #region CTOR
 
-    public OnionUserStore(Uri informationServerUri)
+    public OnionUserStore(Uri informationServerUri, string username, string userpassword)
     {
       if (informationServerUri == null) { throw new ArgumentNullException(nameof(informationServerUri)); }
-      this._informationServerUri = informationServerUri;
+      if (String.IsNullOrWhiteSpace(username)) { throw new ArgumentNullException(nameof(username)); }
+      if (String.IsNullOrWhiteSpace(userpassword)) { throw new ArgumentNullException(nameof(userpassword)); }
+      this.OnionMasterSession = new OnionSession(informationServerUri, username, userpassword);
+    }
+
+    public OnionUserStore(IOnionSession masterSession)
+    {
+      if (masterSession == null) { throw new ArgumentNullException(nameof(masterSession)); }
+      this.OnionMasterSession = masterSession;
     }
     #endregion
 
@@ -43,30 +52,41 @@ namespace HIS.WebApi.Auth.Repositories
 
     public async Task<User> FindByIdAsync(int userId)
     {
-      return await Task.Run(() => Mapper.Instance.Map<User>(this.OnionSession.UserManagement.Users.TryGetUser(userId)));
+      return await Task.Run(() => Mapper.Instance.Map<User>(this.OnionMasterSession.UserManagement.Users.TryGetUser(userId)));
     }
 
     public async Task<User> FindByNameAsync(string userName)
     {
-      return await Task.Run(() => Mapper.Instance.Map<User>(this.OnionSession.UserManagement.Users.TryGetUser(userName)));
+      return await Task.Run(() => Mapper.Instance.Map<User>(this.OnionMasterSession.UserManagement.Users.TryGetUser(userName)));
     }
     public async Task UpdateAsync(User user)
     {
-      // TODO: Update User implementieren
-      throw new NotImplementedException();
-      //return await Task.Run(() => Mapper.Instance.Map<User>(this.OnionSession));
+      if (user==null){throw new ArgumentNullException(nameof(user));}
+      await Task.Run(() =>
+      {
+        var onionUser = this.OnionMasterSession.UserManagement.Users.TryGetUser(user.Id);
+        onionUser.DisplayName = user.DisplayName;
+        onionUser.Name = user.UserName;
+      });
     }
 
-    public Task CreateAsync(User user)
+    public async Task CreateAsync(User user)
     {
-      // TODO: Create User implementieren
-      throw new NotImplementedException();
+      if (user == null) { throw new ArgumentNullException(nameof(user)); }
+
+      await Task.Run(async () =>
+      {
+        this.OnionMasterSession.UserManagement.Users.Create(user.UserName, user.Password);
+        await this.UpdateAsync(user);
+      });
     }
 
     public async Task DeleteAsync(User user)
     {
+      if (user == null) { throw new ArgumentNullException(nameof(user)); }
+
       var onionUser = Mapper.Instance.Map<Onion.Client.IUser>(user);
-      await Task.Run(() => this.OnionSession.UserManagement.Users.Delete(onionUser));
+      await Task.Run(() => this.OnionMasterSession.UserManagement.Users.Delete(onionUser));
     }
 
     /// <summary>
@@ -76,7 +96,7 @@ namespace HIS.WebApi.Auth.Repositories
     protected virtual void Dispose(bool disposing)
     {
       if (disposing)
-        this._session.Dispose();
+        this._masterSession.Dispose();
       this._disposed = true;
     }
 
@@ -87,7 +107,7 @@ namespace HIS.WebApi.Auth.Repositories
     {
       return await Task.Run(() =>
       {
-        var onionUser = this.OnionSession.UserManagement.Users.GetUser(user.Id);
+        var onionUser = this.OnionMasterSession.UserManagement.Users.GetUser(user.Id);
         return onionUser.Groups
                         .Cast<IGroup>()
                         .Select(x => x.Name)
@@ -118,73 +138,115 @@ namespace HIS.WebApi.Auth.Repositories
       return roles.Contains(roleName);
     }
 
-
-    public Task RemoveFromRoleAsync(User user, string roleName)
+    public async Task RemoveFromRoleAsync(User user, string roleName)
     {
-      
-      throw new NotImplementedException();
+      if (user == null) { throw new ArgumentNullException(nameof(user)); }
+      if (String.IsNullOrWhiteSpace(roleName)) { throw new ArgumentNullException(nameof(roleName)); }
+      await Task.Run(() => JoinLeaveGroup(user.Id, roleName, false));
     }
 
-    public Task AddToRoleAsync(User user, string roleName)
+    public async Task AddToRoleAsync(User user, string roleName)
     {
-      throw new NotImplementedException();
+      if (user == null) { throw new ArgumentNullException(nameof(user)); }
+      if (String.IsNullOrWhiteSpace(roleName)) { throw new ArgumentNullException(nameof(roleName)); }
+      await Task.Run(() => JoinLeaveGroup(user.Id, roleName, true));
+
+    }
+
+    private void JoinLeaveGroup(int userID, string roleName, bool join)
+    {
+      var onionUser = this.OnionMasterSession.UserManagement.Users.GetUser(userID);
+
+      if (onionUser == null) { throw new ArgumentNullException(nameof(onionUser)); }
+      if (String.IsNullOrWhiteSpace(roleName)) { throw new ArgumentNullException(nameof(roleName)); }
+
+      var role = UserRoles.None;
+
+      if (UserRoles.TryParse(roleName, true, out role))
+      {
+        switch (role)
+        {
+          case UserRoles.Administrator:
+            onionUser.IsAdministrator = join;
+            break;
+          case UserRoles.SchemaManager:
+            onionUser.IsSchemaManager = join;
+            break;
+          case UserRoles.UserManager:
+            onionUser.IsUserManager = join;
+            break;
+          case UserRoles.Editor:
+            onionUser.IsEditor = join;
+            break;
+          case UserRoles.LiveEditor:
+            onionUser.IsLiveEditor = join;
+            break;
+        }
+      }
+      else
+      {
+        var group = OnionMasterSession.UserManagement.Groups.TryGetGroup(roleName);
+        if (group != null)
+        {
+          if (join)
+          {
+            onionUser.Groups.Join(group);
+          }
+          else
+          {
+            onionUser.Groups.Leave(group);
+          }
+          
+        }
+      }
+
     }
 
     #endregion
 
     #region Member IUserClaimStore
 
-    public Task<IList<Claim>> GetClaimsAsync(User user)
+    public async Task<IList<Claim>> GetClaimsAsync(User user)
     {
-      throw new NotImplementedException();
+      return await Task.Run(() => user.Claims.ToList());
     }
 
-    public Task AddClaimAsync(User user, Claim claim)
+    public async Task AddClaimAsync(User user, Claim claim)
     {
-      throw new NotImplementedException();
+      if (user == null) { throw new ArgumentNullException(nameof(user)); }
+      if (claim == null) { throw new ArgumentNullException(nameof(claim)); }
+
+      await Task.Run(() => user.Claims.Add(claim));
     }
 
-    public Task RemoveClaimAsync(User user, Claim claim)
+    public async Task RemoveClaimAsync(User user, Claim claim)
     {
-      throw new NotImplementedException();
+      if (user == null) { throw new ArgumentNullException(nameof(user)); }
+      if (claim == null) { throw new ArgumentNullException(nameof(claim)); }
+
+      await Task.Run(() => user.Claims.Remove(claim));
     }
 
     #endregion
-
-    public void UpdateSession(string username, string password)
-    {
-      this._session = new OnionSession(this._informationServerUri, username, password);
-    }
-
-    public void UpdateSession(string token)
-    {
-      this._session = new OnionSession(this._informationServerUri, token);
-    }
 
     #endregion
 
     #region PROPERTIES
 
-    private OnionSession OnionSession
+    private IOnionSession OnionMasterSession
     {
       get
       {
-        if (this._session == null || this._session.IsInterrupted)
+        if (this._masterSession == null || this._masterSession.IsInterrupted)
         {
           throw new OnionSessionNotInitialisedException();
         }
-        return this._session;
+        return this._masterSession;
       }
-      set { this._session = value; }
+      set { this._masterSession = value; }
     }
 
-    public IQueryable<User> Users => (IQueryable<User>) _session?.UserManagement.Users.AsQueryable();
-
-    #endregion
-
-    #region Nested
-
-
+    public IQueryable<User> Users => (IQueryable<User>) OnionMasterSession?.UserManagement.Users.AsQueryable();
 
     #endregion
   }

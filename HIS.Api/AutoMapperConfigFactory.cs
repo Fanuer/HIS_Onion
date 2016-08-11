@@ -6,6 +6,7 @@ using HIS.WebApi.Auth.Base.Interfaces;
 using HIS.WebApi.Auth.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Onion.Client;
+using Onion.Server.DataEngine.Data;
 
 namespace HIS.WebApi.Auth
 {
@@ -37,15 +38,7 @@ namespace HIS.WebApi.Auth
 
     private User FromOnionUser(Onion.Client.IUser user)
     {
-      var claims = new Collection<IdentityUserClaim>
-      {
-        new IdentityUserClaim() {ClaimType = UserRoles.Administrator.ToString(), ClaimValue = user.IsAdministrator.ToString(), UserId = user.Id.ToString()},
-        new IdentityUserClaim() {ClaimType = UserRoles.Editor.ToString(), ClaimValue = user.IsEditor.ToString(), UserId = user.Id.ToString()},
-        new IdentityUserClaim() {ClaimType = UserRoles.LiveEditor.ToString(), ClaimValue = user.IsLiveEditor.ToString(), UserId = user.Id.ToString()},
-        new IdentityUserClaim() {ClaimType = UserRoles.SchemaManager.ToString(), ClaimValue = user.IsSchemaManager.ToString(), UserId = user.Id.ToString()},
-        new IdentityUserClaim() {ClaimType = UserRoles.UserManager.ToString(), ClaimValue = user.IsUserManager.ToString(), UserId = user.Id.ToString()},
-      };
-
+      var claims = new Collection<Claim>();
       return new User(user.Id, user.Name, user.DisplayName, claims);
     }
     #endregion

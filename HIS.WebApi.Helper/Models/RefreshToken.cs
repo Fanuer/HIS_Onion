@@ -73,6 +73,7 @@ namespace HIS.WebApi.Auth.Base.Models
     [Required]
     public string ProtectedTicket { get; set; }
 
+    
     #endregion
   }
 }

@@ -7,23 +7,17 @@ using Microsoft.AspNet.Identity;
 
 namespace HIS.WebApi.Auth.Base.Interfaces.Repository
 {
-  public interface IUserManagementRepository<TUser, TRole, in TUserKey, in TRoleKey> 
+  public interface IUserManagementRepository<TUser, in TUserKey> 
     : IDisposable
       where TUser : class, IUser<TUserKey>
-      where TRole : class, IRole<TRoleKey>
   {
-    IUserStore<TUser, TUserKey> Users { get; }
-
-    IRoleStore<TRole, TRoleKey> Roles { get; }
+    IUserRoleStore<TUser, TUserKey> Users { get; }
   }
 
-  public interface IUserManagementRepository<TUser, TRole>
+  public interface IUserManagementRepository<TUser>
       where TUser : class, IUser<string>
-      where TRole : class, IRole<string>
   {
-    IUserStore<TUser> Users { get; }
-
-    IRoleStore<TRole> Roles { get; }
+    IUserRoleStore<TUser> Users { get; }
   }
 
 }

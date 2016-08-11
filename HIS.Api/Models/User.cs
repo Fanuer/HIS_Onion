@@ -9,18 +9,19 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace HIS.WebApi.Auth.Models
 {
-  public class User: IdentityUser<int, IdentityUserLogin<int>, IdentityUserRole<int>, IdentityUserClaim<int>>, Base.Interfaces.IUser<int>
+  public class User: IdentityUser<int, IdentityUserLogin<int>, IdentityUserRole<int>, IdentityUserClaim<int>>, Base.Interfaces.IUser<int>, Base.Interfaces.IUser<string>
   {
     #region FIELDS
 
     private string _displayName;
+    private string _password;
     #endregion
 
     #region CTOR
 
     private User()
     {
-      this.Claims = new Collection<IdentityUserClaim>();
+      this.Claims = new Collection<Claim>();
     }
 
     public User(int id):this()
@@ -28,9 +29,10 @@ namespace HIS.WebApi.Auth.Models
       this.Id = id;
     }
 
-    public User(int id, string userName, string displayName="", Collection<IdentityUserClaim> claims = null):this(id)
+    public User(int id, string userName, string displayName="", Collection<Claim> claims = null):this(id)
     {
       if (String.IsNullOrWhiteSpace(userName)){throw new ArgumentNullException(nameof(userName));}
+
       UserName = userName;
       this.DisplayName = displayName;
 
@@ -45,11 +47,16 @@ namespace HIS.WebApi.Auth.Models
     #endregion
 
     #region PROPERTIES
-    public int Id { get; private set; }
+    public int Id { get; set; }
+
+
+    string Microsoft.AspNet.Identity.IUser<string>.Id => this.Id.ToString();
+
+    string IEntity<string>.Id => this.Id.ToString();
 
     public string UserName { get; set; }
 
-    public ICollection<IdentityUserClaim> Claims { get; set; }
+    public ICollection<Claim> Claims { get; set; }
 
     public string DisplayName
     {
@@ -63,13 +70,21 @@ namespace HIS.WebApi.Auth.Models
       }
     }
 
+    public string Password
+    {
+      internal get { return this.Password; }
+      set { this.Password = value; }
+    }
+
     public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<Base.Interfaces.IUser<string>> manager, string authenticationType)
     {
-      throw new NotImplementedException();
+      var claims = await manager.ClaimsIdentityFactory.CreateAsync(manager, this, authenticationType);
+      claims.AddClaims(this.Claims);
+      return claims;
     }
 
     #endregion
 
-
+    
   }
 }

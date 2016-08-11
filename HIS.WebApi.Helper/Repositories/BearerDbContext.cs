@@ -5,7 +5,7 @@ using HIS.WebApi.Auth.Base.Models;
 
 namespace HIS.WebApi.Auth.Base.Repositories
 {
-  internal class BearerDbContext: DbContext
+  public class BearerDbContext: DbContext
   {
     #region Fields
     #endregion
