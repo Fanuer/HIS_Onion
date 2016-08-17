@@ -11,15 +11,15 @@ using log4net.Util;
 namespace HIS.WebApi.Auth.Models.XMLModels
 {
   [XmlRoot("enviromentSettings")]
-  internal class EnviromentSettings
+  internal class EnvironmentSettings
   {
     #region Field
 
-    private static EnviromentSettings _instance;
+    private static EnvironmentSettings _instance;
     #endregion
 
     #region Constructor
-    private EnviromentSettings()
+    private EnvironmentSettings()
     {
       
     }
@@ -27,19 +27,19 @@ namespace HIS.WebApi.Auth.Models.XMLModels
 
     #region Methods
 
-    private static EnviromentSettings Create()
+    private static EnvironmentSettings Create()
     {
-      EnviromentSettings result = null;
-      string filename = Filename("App_Data", "EnviromentSettings.xml");
+      EnvironmentSettings result = null;
+      string filename = Filename("App_Data", "EnvironmentSettings.xml");
       if (!File.Exists(filename))
       {
-        throw new FileNotFoundException("EnvironmentSettings not fount", filename);
+        throw new FileNotFoundException("EnvironmentSettings not found", filename);
       }
 
       using (var reader = new XmlTextReader(filename))
       {
-        var serializer = new XmlSerializer(typeof(EnviromentSettings));
-        result = (EnviromentSettings) serializer.Deserialize(reader);
+        var serializer = new XmlSerializer(typeof(EnvironmentSettings));
+        result = (EnvironmentSettings) serializer.Deserialize(reader);
       }
 
       return result;
@@ -56,17 +56,17 @@ namespace HIS.WebApi.Auth.Models.XMLModels
     [XmlElement("onion", typeof(OnionModel))]
     public OnionModel OnionData { get; set; }
 
-    public EnviromentSettings Instance
+    public static EnvironmentSettings Instance
     {
       get
       {
         if (_instance == null)
         {
-          lock (typeof(EnviromentSettings))
+          lock (typeof(EnvironmentSettings))
           {
             if (_instance == null)
             {
-              _instance = EnviromentSettings.Create();
+              _instance = EnvironmentSettings.Create();
             }
           }
         }
