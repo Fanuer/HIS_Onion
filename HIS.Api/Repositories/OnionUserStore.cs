@@ -1,24 +1,21 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using AutoMapper;
 using HIS.WebApi.Auth.Exceptions;
 using HIS.WebApi.Auth.Models;
 using Microsoft.AspNet.Identity;
 using Onion.Client;
-using IUser = Onion.Client.IUser;
 
 namespace HIS.WebApi.Auth.Repositories
 {
-  public class OnionUserStore
-    : IUserStore<User, int>,
-     IUserRoleStore<User, int>,
-     IQueryableUserStore<User, int>,
-     IUserClaimStore<User, int>
+    public class OnionUserStore
+    : IUserStore<OnionUser, int>,
+     IUserRoleStore<OnionUser, int>,
+     IQueryableUserStore<OnionUser, int>,
+     IUserClaimStore<OnionUser, int>
   {
     #region FIELDS
     private bool _disposed = false;
@@ -50,16 +47,16 @@ namespace HIS.WebApi.Auth.Repositories
       GC.SuppressFinalize((object)this);
     }
 
-    public async Task<User> FindByIdAsync(int userId)
+    public async Task<OnionUser> FindByIdAsync(int userId)
     {
-      return await Task.Run(() => Mapper.Instance.Map<User>(this.OnionMasterSession.UserManagement.Users.TryGetUser(userId)));
+      return await Task.Run(() => Mapper.Instance.Map<OnionUser>(this.OnionMasterSession.UserManagement.Users.TryGetUser(userId)));
     }
 
-    public async Task<User> FindByNameAsync(string userName)
+    public async Task<OnionUser> FindByNameAsync(string userName)
     {
-      return await Task.Run(() => Mapper.Instance.Map<User>(this.OnionMasterSession.UserManagement.Users.TryGetUser(userName)));
+      return await Task.Run(() => Mapper.Instance.Map<OnionUser>(this.OnionMasterSession.UserManagement.Users.TryGetUser(userName)));
     }
-    public async Task UpdateAsync(User user)
+    public async Task UpdateAsync(OnionUser user)
     {
       if (user==null){throw new ArgumentNullException(nameof(user));}
       await Task.Run(() =>
@@ -70,7 +67,7 @@ namespace HIS.WebApi.Auth.Repositories
       });
     }
 
-    public async Task CreateAsync(User user)
+    public async Task CreateAsync(OnionUser user)
     {
       if (user == null) { throw new ArgumentNullException(nameof(user)); }
 
@@ -81,7 +78,7 @@ namespace HIS.WebApi.Auth.Repositories
       });
     }
 
-    public async Task DeleteAsync(User user)
+    public async Task DeleteAsync(OnionUser user)
     {
       if (user == null) { throw new ArgumentNullException(nameof(user)); }
 
@@ -103,7 +100,7 @@ namespace HIS.WebApi.Auth.Repositories
     #endregion
 
     #region Member IUserRoleStore
-    public async Task<IList<string>> GetRolesAsync(User user)
+    public async Task<IList<string>> GetRolesAsync(OnionUser user)
     {
       return await Task.Run(() =>
       {
@@ -130,7 +127,7 @@ namespace HIS.WebApi.Auth.Repositories
       return result;
     }
 
-    public async Task<bool> IsInRoleAsync(User user, string roleName)
+    public async Task<bool> IsInRoleAsync(OnionUser user, string roleName)
     {
       if (user == null) { throw new ArgumentNullException(nameof(user)); }
 
@@ -138,14 +135,14 @@ namespace HIS.WebApi.Auth.Repositories
       return roles.Contains(roleName);
     }
 
-    public async Task RemoveFromRoleAsync(User user, string roleName)
+    public async Task RemoveFromRoleAsync(OnionUser user, string roleName)
     {
       if (user == null) { throw new ArgumentNullException(nameof(user)); }
       if (String.IsNullOrWhiteSpace(roleName)) { throw new ArgumentNullException(nameof(roleName)); }
       await Task.Run(() => JoinLeaveGroup(user.Id, roleName, false));
     }
 
-    public async Task AddToRoleAsync(User user, string roleName)
+    public async Task AddToRoleAsync(OnionUser user, string roleName)
     {
       if (user == null) { throw new ArgumentNullException(nameof(user)); }
       if (String.IsNullOrWhiteSpace(roleName)) { throw new ArgumentNullException(nameof(roleName)); }
@@ -206,25 +203,30 @@ namespace HIS.WebApi.Auth.Repositories
 
     #region Member IUserClaimStore
 
-    public async Task<IList<Claim>> GetClaimsAsync(User user)
+    public async Task<IList<Claim>> GetClaimsAsync(OnionUser user)
     {
-      return await Task.Run(() => user.Claims.ToList());
+      return await Task.Run(() =>
+      {
+          var addClaims = user.AdditionalClaims;
+          var identityClaims = user.Claims.Select(x => new Claim(x.ClaimType, x.ClaimValue));
+          return addClaims.Union(identityClaims).ToList();
+      });
     }
 
-    public async Task AddClaimAsync(User user, Claim claim)
+    public async Task AddClaimAsync(OnionUser user, Claim claim)
     {
       if (user == null) { throw new ArgumentNullException(nameof(user)); }
       if (claim == null) { throw new ArgumentNullException(nameof(claim)); }
 
-      await Task.Run(() => user.Claims.Add(claim));
+      await Task.Run(() => user.AdditionalClaims.Add(claim));
     }
 
-    public async Task RemoveClaimAsync(User user, Claim claim)
+    public async Task RemoveClaimAsync(OnionUser user, Claim claim)
     {
       if (user == null) { throw new ArgumentNullException(nameof(user)); }
       if (claim == null) { throw new ArgumentNullException(nameof(claim)); }
 
-      await Task.Run(() => user.Claims.Remove(claim));
+      await Task.Run(() => user.AdditionalClaims.Remove(claim));
     }
 
     #endregion
@@ -246,7 +248,7 @@ namespace HIS.WebApi.Auth.Repositories
       set { this._masterSession = value; }
     }
 
-    public IQueryable<User> Users => (IQueryable<User>) OnionMasterSession?.UserManagement.Users.AsQueryable();
+    public IQueryable<OnionUser> Users => (IQueryable<OnionUser>) OnionMasterSession?.UserManagement.Users.AsQueryable();
 
     #endregion
   }

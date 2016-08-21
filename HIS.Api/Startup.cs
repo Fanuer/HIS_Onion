@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Web.Http;
+using AutoMapper;
 using HIS.WebApi.Auth;
 using HIS.WebApi.Auth.Provider;
 using Microsoft.Owin;
@@ -11,26 +12,22 @@ using Owin;
 
 namespace HIS.WebApi.Auth
 {
-  public partial class Startup
-  {
-    public void Configuration(IAppBuilder app)
+    public partial class Startup
     {
-      HttpConfiguration httpConfig = new HttpConfiguration();
+        public void Configuration(IAppBuilder app)
+        {
+            HttpConfiguration httpConfig = new HttpConfiguration();
 
-      //ConfigureAuth(app);
-    }
+            //ConfigureAuth(app);
+        }
 
-    private ConfigureAutomapper(IAppBuilder app)
-    {
-      app.CreatePerOwinContext(AutoMapperConfigFactory.Instance.Create().CreateMapper);
-    }
-
-    /// <summary>
-    /// Configure the db context and user manager to use a single instance per request
-    /// </summary>
-    /// <param name="app"></param>
-    private void ConfigureOAuthTokenGeneration(IAppBuilder app)
-    {
+        /// <summary>
+        /// Configure the db context and user manager to use a single instance per request
+        /// </summary>
+        /// <param name="app"></param>
+        private void ConfigureOAuthTokenGeneration(IAppBuilder app)
+        {
+            /*
       app.CreatePerOwinContext(ContextFactory.Instance.CreateRepository);
 
       OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
@@ -46,6 +43,7 @@ namespace HIS.WebApi.Auth
 
       // OAuth 2.0 Bearer Access Token Generation
       app.UseOAuthAuthorizationServer(OAuthServerOptions);
+      */
+        }
     }
-  }
 }

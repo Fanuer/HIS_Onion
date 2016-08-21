@@ -8,7 +8,7 @@ namespace HIS.WebApi.Auth.Base.Interfaces
 {
   public interface IUser<TKey>:Microsoft.AspNet.Identity.IUser<TKey>, IEntity<TKey>
   {
-    ICollection<Claim> Claims { get; }
+    ICollection<Claim> AdditionalClaims { get; }
     string DisplayName { get; }
 
     #region Method

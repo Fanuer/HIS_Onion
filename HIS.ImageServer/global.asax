@@ -1,1 +1,0 @@
-﻿<%@ Application Inherits="Onion.ImageServer.WebHosting.OnionImageServerHttpApplication, Onion.ImageServer" Language="C#" %>

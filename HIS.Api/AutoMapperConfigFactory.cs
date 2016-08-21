@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Security.Claims;
 using AutoMapper;
 using HIS.WebApi.Auth.Base.Interfaces;
+using HIS.WebApi.Auth.Base.Models;
 using HIS.WebApi.Auth.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Onion.Client;

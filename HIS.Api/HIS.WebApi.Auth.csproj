@@ -193,7 +193,7 @@
   <ItemGroup>
     <Compile Include="AutoMapperConfigFactory.cs" />
     <Compile Include="Exceptions\OnionSessionNotInitialisedException.cs" />
-    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\OnionUser.cs" />
     <Compile Include="Models\XMLModels\EnvironmentSettings.cs" />
     <Compile Include="Models\XMLModels\OnionModel.cs" />
     <Compile Include="Models\XMLModels\XmlUri.cs" />
@@ -217,14 +217,18 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Interface\" />
+    <Folder Include="Manager\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HIS.Helpers\HIS.Helpers.csproj">
+      <Project>{53a06b74-641c-4237-8529-8498e9239215}</Project>
+      <Name>HIS.Helpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HIS.WebApi.Helper\HIS.WebApi.Auth.Base.csproj">
       <Project>{b8ff072a-c2d6-4db8-b8cd-98d2ecd64e1f}</Project>
       <Name>HIS.WebApi.Auth.Base</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interface\" />
-    <Folder Include="Manager\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

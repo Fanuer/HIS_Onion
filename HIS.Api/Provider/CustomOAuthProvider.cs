@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using HIS.Helpers;
 using HIS.WebApi.Auth.Base.Interfaces.Repository;
 using HIS.WebApi.Auth.Base.Models;
 using HIS.WebApi.Auth.Base.Models.Enums;
@@ -62,12 +63,12 @@ namespace HIS.WebApi.Auth.Provider
                 context.TryGetFormCredentials(out clientId, out clientSecret);
             }
 
-            if (context.ClientId == null || context.ClientId == CustomRefreshTokenProvider.DUMMY_CLIENT)
+            if (String.IsNullOrEmpty(context.ClientId))
             {
                 //Remove the comments from the below line context.SetError, and invalidate context 
                 //if you want to force sending clientId/secrects once obtain access tokens. 
-                context.Validated();
-                //context.SetError("invalid_clientId", "ClientId should be sent.");
+                
+                context.SetError("invalid_clientId", "ClientId should be sent.");
                 return;
             }
             
@@ -85,13 +86,10 @@ namespace HIS.WebApi.Auth.Provider
                     context.SetError("invalid_clientId", "Client secret should be sent.");
                     return;
                 }
-                else
+                if (client.Secret != Helper.GetHash(clientSecret))
                 {
-                    if (client.Secret != Helper.GetHash(clientSecret))
-                    {
-                        context.SetError("invalid_clientId", "Client secret is invalid.");
-                        return;
-                    }
+                    context.SetError("invalid_clientId", "Client secret is invalid.");
+                    return;
                 }
             }
 

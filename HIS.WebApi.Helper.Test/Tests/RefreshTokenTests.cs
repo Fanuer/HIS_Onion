@@ -6,6 +6,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
 using HIS.Testing.Base;
+using HIS.WebApi.Auth.Base.Interfaces;
 using HIS.WebApi.Auth.Base.Models;
 using HIS.WebApi.Auth.Base.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -74,7 +75,7 @@ namespace HIS.WebApi.Auth.Base.Test.Tests
     [TestMethod]
     public async Task TestFindOne()
     {
-      using (var rep = new BearerUserRepository<string, int>(this.Context.Object))
+      using (var rep = new BearerUserRepository<IUser<string>>(this.Context.Object))
       {
         var element= await rep.RefreshTokens.FindAsync(this.SingleObject.Id);
         Assert.IsNotNull(element);
@@ -85,7 +86,7 @@ namespace HIS.WebApi.Auth.Base.Test.Tests
     [TestMethod]
     public async Task TestFindAll()
     {
-      using (var rep = new BearerUserRepository<string, int>(this.Context.Object))
+      using (var rep = new BearerUserRepository<User>(this.Context.Object))
       {
         var elements = await rep.RefreshTokens.GetAllAsync();
         Assert.IsNotNull(elements);
@@ -96,7 +97,7 @@ namespace HIS.WebApi.Auth.Base.Test.Tests
     [TestMethod]
     public async Task TestExists()
     {
-      using (var rep = new BearerUserRepository<string, int>(this.Context.Object))
+      using (var rep = new BearerUserRepository<User>(this.Context.Object))
       {
         var exists = await rep.RefreshTokens.ExistsAsync("3");
         Assert.IsTrue(exists);
@@ -108,7 +109,7 @@ namespace HIS.WebApi.Auth.Base.Test.Tests
     [TestMethod]
     public async Task TestAdd()
     {
-      using (var rep = new BearerUserRepository<string, int>(this.Context.Object))
+      using (var rep = new BearerUserRepository<User>(this.Context.Object))
       {
         var newRT = (RefreshToken) this.SingleObject.Clone();
         newRT.Id = "4";
@@ -133,7 +134,7 @@ namespace HIS.WebApi.Auth.Base.Test.Tests
     [ExpectedException(typeof(ArgumentNullException))]
     public async Task TestAdd_NullParameterCallCausesExeption()
     {
-      using (var rep = new BearerUserRepository<string, int>(this.Context.Object))
+      using (var rep = new BearerUserRepository<User>(this.Context.Object))
       { 
         var addedSuccessfully = await rep.RefreshTokens.AddAsync(null);
         Assert.Fail();
@@ -143,7 +144,7 @@ namespace HIS.WebApi.Auth.Base.Test.Tests
     [TestMethod]
     public async Task TestRemove()
     {
-      using (var rep = new BearerUserRepository<string, int>(this.Context.Object))
+      using (var rep = new BearerUserRepository<User>(this.Context.Object))
       {
         var removedSuccessfully = await rep.RefreshTokens.RemoveAsync(this.SingleObject);
 
@@ -157,7 +158,7 @@ namespace HIS.WebApi.Auth.Base.Test.Tests
     [ExpectedException(typeof(ArgumentNullException))]
     public async Task TestRemove_NullParameterCallCausesExeption()
     {
-      using (var rep = new BearerUserRepository<string, int>(this.Context.Object))
+      using (var rep = new BearerUserRepository<User>(this.Context.Object))
       {
         RefreshToken removeObject = null;
         await rep.RefreshTokens.RemoveAsync(removeObject);

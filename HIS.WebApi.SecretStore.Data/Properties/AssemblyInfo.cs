@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Allgemeine Informationen über eine Assembly werden über die folgenden 
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
-[assembly: AssemblyTitle("HIS.Helpers")]
+[assembly: AssemblyTitle("HIS.WebApi.SecretStore.Data")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("HIS.Helpers")]
+[assembly: AssemblyProduct("HIS.WebApi.SecretStore.Data")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM verfügbar gemacht wird
-[assembly: Guid("53a06b74-641c-4237-8529-8498e9239215")]
+[assembly: Guid("fd987483-ad75-445d-9cf7-c72217697ec5")]
 
 // Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
 //
