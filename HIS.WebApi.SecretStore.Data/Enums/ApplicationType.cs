@@ -3,7 +3,7 @@
     /// <summary>
     /// Request Type of a Client
     /// </summary>
-    public enum ApplicationTypes
+    public enum ApplicationType
     {
         /// <summary>
         /// Client only needs JWT

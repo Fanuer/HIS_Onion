@@ -14,7 +14,6 @@ namespace HIS.WebApi.Auth.Base.Models
     #region FIELDS
 
     private string _displayName;
-    private string _password;
     #endregion
 
     #region CTOR
@@ -53,7 +52,7 @@ namespace HIS.WebApi.Auth.Base.Models
 
     string IEntity<string>.Id => this.Id.ToString();
 
-    public string UserName { get; set; }
+    public override string UserName { get; set; }
 
     public ICollection<Claim> AdditionalClaims { get; set; }
 

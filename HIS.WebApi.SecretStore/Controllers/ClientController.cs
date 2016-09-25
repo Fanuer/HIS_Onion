@@ -18,6 +18,27 @@ namespace HIS.WebApi.SecretStore.Controllers
     [SwaggerResponse(HttpStatusCode.InternalServerError, "An internal Server error has occured")]
     public class ClientController : ApiController
     {
+        #region CONST
+        #endregion
+
+        #region FIELDS
+        private readonly ISecretRepository _repository;
+        #endregion
+
+        #region CTOR
+
+        /// <summary>
+        /// Creates a new instance of this controller
+        /// </summary>
+        /// <param name="repository">used repository</param>
+        public ClientController(ISecretRepository repository)
+        {
+            this._repository = repository;
+        }
+      
+        #endregion
+
+        #region METHODS
         /// <summary>
         /// Find a Client by its Id
         /// </summary>
@@ -30,11 +51,7 @@ namespace HIS.WebApi.SecretStore.Controllers
         [SwaggerResponse(HttpStatusCode.NotFound)]
         public async Task<IHttpActionResult> FindClientAsync(string clientId)
         {
-            Client result;
-            using (ISecretRepository rep = new MongoDbSecretRepository())
-            {
-                result = await rep.FindClientAsync(clientId);
-            }
+            var result = await _repository.FindClientAsync(clientId);
             if (result == null)
             {
                 return NotFound();
@@ -54,20 +71,24 @@ namespace HIS.WebApi.SecretStore.Controllers
         [Route("")]
         public async Task<IHttpActionResult> CreateAsync([FromBody]ClientViewModel clientModel)
         {
-            Client client;
+            if (ModelState.IsValid)
+            {
+                var foundClient = await _repository.FindClientByNameAsync(clientModel.Name);
+                if (foundClient != null)
+                {
+                    ModelState.AddModelError("Name", "A client with the given name already exists");
+                }
+            }
+            
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            using (ISecretRepository rep = new MongoDbSecretRepository())
-            {
-                client = await rep.AddClientAsync(clientModel.Name);
-            }
-
+            var client = await _repository.AddClientAsync(clientModel.Name);
             return CreatedAtRoute("GetClientById", new { clientId = client.Id }, client);
         }
-        
+
         /// <summary>
         /// Removes a Client
         /// </summary>
@@ -80,17 +101,26 @@ namespace HIS.WebApi.SecretStore.Controllers
         [HttpDelete]
         public async Task<IHttpActionResult> DeleteClientAsync(string clientId)
         {
-            Client client;
-            using (ISecretRepository rep = new MongoDbSecretRepository())
+            var client = await _repository.FindClientAsync(clientId);
+            if (client == null)
             {
-                client = await rep.FindClientAsync(clientId);
-                if (client== null)
-                {
-                    return NotFound();
-                }
-                await rep.RemoveClientAsync(clientId);
+                return NotFound();
             }
+            await _repository.RemoveClientAsync(clientId);
             return Ok();
         }
+
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            this._repository.Dispose();
+            base.Dispose(disposing);
+        }
+
+        #endregion
+
+        #region PROPERTIES
+        #endregion
+
     }
 }

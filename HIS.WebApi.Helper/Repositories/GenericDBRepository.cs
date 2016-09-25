@@ -111,13 +111,13 @@ namespace HIS.WebApi.Auth.Base.Repositories
     {
       if (model == null)
       {
-        throw new ArgumentNullException("model");
+        throw new ArgumentNullException(nameof(model));
       }
       this.DBContext.Entry(model).State = EntityState.Modified;
       return await this.DBContext.SaveChangesAsync() > 0;
     }
 
-    public async Task<int> CountAsync<T>() where T : class
+    public async Task<int> CountAsync<T>() where T:class
     {
       return await DBContext.Set<T>().CountAsync();
     }

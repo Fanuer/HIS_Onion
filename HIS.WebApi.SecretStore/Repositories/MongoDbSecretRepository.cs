@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace HIS.WebApi.SecretStore.Repositories
     /// <summary>
     /// A Client Store which uses MongoDb
     /// </summary>
-    public class MongoDbSecretRepository: ISecretRepository
+    internal class MongoDbSecretRepository: ISecretRepository
     {
         #region CONST
         private const string ClientDbName = "HIS_CLIENTS";
@@ -54,6 +55,8 @@ namespace HIS.WebApi.SecretStore.Repositories
             _clients = _database.GetCollection<Client>(ClientCollectionName);
 
         }
+
+        public MongoDbSecretRepository():this(""){}
         #endregion
 
         #region METHODS
@@ -63,19 +66,24 @@ namespace HIS.WebApi.SecretStore.Repositories
         /// </summary>
         /// <param name="name">Client name</param>
         /// <param name="allowOrigin">allowed origins</param>
-        /// <param name="types">Application Type</param>
-        /// <param name="typeSpan">Type Span in Month</param>
+        /// <param name="type">Application Type</param>
+        /// <param name="timeSpan">Type Span in Month</param>
         /// <returns></returns>
-        public async Task<Client> AddClientAsync(string name, string allowOrigin ="*", ApplicationTypes types = ApplicationTypes.JavaScript, int typeSpan = 6)
+        public async Task<Client> AddClientAsync(string name, string allowOrigin ="*", ApplicationType type = ApplicationType.JavaScript, int timeSpan = 6)
         {
             if (String.IsNullOrEmpty(name)) { throw new ArgumentNullException(nameof(name));}
 
-            var clientId = Guid.NewGuid().ToString("N");
-            var key = new byte[32];
-            RNGCryptoServiceProvider.Create().GetBytes(key);
-            var base64Secret = TextEncodings.Base64Url.Encode(key);
+            var oldClient = await this.FindClientByNameAsync(name);
+            if (oldClient != null)
+            {
+                throw new ArgumentException("A client with the given name already exists");
+            }
 
-            var client = new Client(clientId, base64Secret, name, allowOrigin, type: types, timeSpan: typeSpan);
+            var client = new Client(name, allowOrigin)
+            {
+                 ApplicationType= type,
+                 RefreshTokenLifeTime = timeSpan
+            };
             await this._clients.InsertOneAsync(client);
             return client;
         }
@@ -99,10 +107,19 @@ namespace HIS.WebApi.SecretStore.Repositories
         public async Task<Client> FindClientAsync(string clientId)
         {
             if (String.IsNullOrEmpty(clientId)) { throw new ArgumentNullException(nameof(clientId)); }
-            var curser = await this._clients.FindAsync(x => clientId.Equals(x.Id));
-            return curser.Current.First();
+            return await this._clients.Find(x => clientId.Equals(x.Id)).FirstOrDefaultAsync();
         }
-        
+
+        /// <summary>
+        /// Find a client by its name
+        /// </summary>
+        /// <param name="clientName">name of a client</param>
+        /// <returns></returns>
+        public async Task<Client> FindClientByNameAsync(string clientName)
+        {
+            if (String.IsNullOrEmpty(clientName)) { throw new ArgumentNullException(nameof(clientName)); }
+            return await this._clients.Find(x => clientName.Equals(x.Name)).FirstOrDefaultAsync();
+        }
         /// <summary>
         /// Disposes this Object
         /// </summary>

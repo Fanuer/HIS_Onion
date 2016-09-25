@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
-using HIS.Helpers;
+using HIS.Helpers.Crypto;
 using HIS.WebApi.Auth.Base.Interfaces.Repository;
 using HIS.WebApi.Auth.Base.Models;
 using HIS.WebApi.Auth.Base.Models.Enums;
@@ -86,7 +86,7 @@ namespace HIS.WebApi.Auth.Provider
                     context.SetError("invalid_clientId", "Client secret should be sent.");
                     return;
                 }
-                if (client.Secret != Helper.GetHash(clientSecret))
+                if (!Hasher.Current.ValidatePassword(clientSecret, client.Secret))
                 {
                     context.SetError("invalid_clientId", "Client secret is invalid.");
                     return;

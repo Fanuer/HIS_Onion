@@ -57,6 +57,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Onion.Client, Version=1.0.7.0, Culture=neutral, PublicKeyToken=634e7146cdfaaed4, processorArchitecture=MSIL">
       <HintPath>..\packages\Onion.Client.4.5.7.2411\lib\net40\Onion.Client.dll</HintPath>
       <Private>True</Private>
@@ -87,9 +91,6 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
     </Reference>
@@ -205,7 +206,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\EnvironmentSettings.xml" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -222,7 +225,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HIS.Helpers\HIS.Helpers.csproj">
-      <Project>{53a06b74-641c-4237-8529-8498e9239215}</Project>
+      <Project>{92F4E68B-353C-4301-8558-F2C87176CEDD}</Project>
       <Name>HIS.Helpers</Name>
     </ProjectReference>
     <ProjectReference Include="..\HIS.WebApi.Helper\HIS.WebApi.Auth.Base.csproj">

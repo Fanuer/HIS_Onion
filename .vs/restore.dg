@@ -1,1 +1,4 @@
-#:E:\Projekte\HIS\HIS.WebApi.SecretStore\HIS.WebApi.SecretStore.xproj
+#:E:\Projekte\HIS\HIS.WebApi.SecretStore.V2\HIS.WebApi.SecretStore.V2.xproj
+E:\Projekte\HIS\HIS.WebApi.SecretStore.V2\HIS.WebApi.SecretStore.V2.xproj|E:\Projekte\HIS\HIS.WebApi.SecretStore.Data\HIS.WebApi.SecretStore.Data.csproj
+E:\Projekte\HIS\HIS.WebApi.SecretStore.V2\HIS.WebApi.SecretStore.V2.xproj|E:\Projekte\HIS\HIS.Helpers.WebApi\HIS.Helpers.WebApi.csproj
+E:\Projekte\HIS\HIS.WebApi.SecretStore.Data\HIS.WebApi.SecretStore.Data.csproj|E:\Projekte\HIS\HIS.Helpers\HIS.Helpers.csproj
