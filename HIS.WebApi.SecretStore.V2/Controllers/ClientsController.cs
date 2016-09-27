@@ -1,5 +1,7 @@
-﻿using System.Net;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Threading.Tasks;
+using System.Web.Http.Description;
 using HIS.WebApi.SecretStore.Data;
 using HIS.WebApi.SecretStore.V2.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +14,8 @@ namespace HIS.WebApi.SecretStore.V2.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [SwaggerResponse(HttpStatusCode.InternalServerError, "An internal Server error has occured")]
-    public class ClientController : Controller
+    [Produces("application/json")]
+    public class ClientsController : Controller
     {
         #region CONST
         #endregion
@@ -27,23 +30,25 @@ namespace HIS.WebApi.SecretStore.V2.Controllers
         /// Creates a new instance of this controller
         /// </summary>
         /// <param name="repository">used repository</param>
-        public ClientController(ISecretRepository repository)
+        public ClientsController(ISecretRepository repository)
         {
             this._repository = repository;
         }
-      
+
         #endregion
 
         #region METHODS
         /// <summary>
         /// Find a Client by its Id
         /// </summary>
-        /// <param name="clientId">Id if the Client</param>
-        /// <returns></returns>
+        /// <param name="clientId">Id of the Client</param>
+        /// <returns>Client-Object</returns> 
+        /// <response code="404">Client not found</response>
+        /// <response code="200">Client found</response>
         [HttpGet("{clientId}", Name = "GetClientById")]
         [SwaggerOperation("GetById")]
-        [SwaggerResponse(HttpStatusCode.OK)]
-        [SwaggerResponse(HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Client), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Client), (int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> FindClientAsync(string clientId)
         {
             var result = await _repository.FindClientAsync(clientId);
@@ -59,11 +64,13 @@ namespace HIS.WebApi.SecretStore.V2.Controllers
         /// </summary>
         /// <param name="clientModel">Client Data</param>
         /// <returns></returns>
+        /// 
+        /// <response code="400">If the item is null</response>
         [SwaggerOperation("Create")]
         [SwaggerResponse(HttpStatusCode.Created, Type = typeof(ClientViewModel))]
         [SwaggerResponse(HttpStatusCode.BadRequest)]
         [HttpPost("")]
-        public async Task<IActionResult> CreateAsync([Microsoft.AspNetCore.Mvc.FromBody]ClientViewModel clientModel)
+        public async Task<IActionResult> CreateAsync([FromBody, Required]ClientViewModel clientModel)
         {
             if (ModelState.IsValid)
             {

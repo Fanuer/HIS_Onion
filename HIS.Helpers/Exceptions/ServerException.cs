@@ -58,7 +58,7 @@ namespace HIS.Helpers.Exceptions
                     // Othertimes, there may not be Model Errors:
                     else
                     {
-                        var error = JsonConvert.DeserializeObject<Dictionary<string, string>>(httpErrorObject);
+                        var error = JsonConvert.DeserializeObject<Dictionary<string, IList<string>>>(httpErrorObject);
 
                         foreach (var kvp in error)
                         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Common.Logging;
 using HIS.Helpers.Exceptions;
@@ -29,15 +30,6 @@ namespace HIS.WebApi.Clients.SecretStore.Test
         #endregion
 
         #region METHODS
-
-        #endregion
-
-        #region PROPERTIES
-
-        #endregion
-
-
-
         [TestMethod]
         public async Task AddFindDeleteViaHttpPossible()
         {
@@ -94,10 +86,6 @@ namespace HIS.WebApi.Clients.SecretStore.Test
                     client = await clientStore.CreateClientAsync(TestClient);
                     Assert.Fail();
                 }
-                catch (HttpRequestException e)
-                {
-                    
-                }
                 catch (ServerException e)
                 {
                     Assert.AreEqual(e.StatusCode, HttpStatusCode.BadRequest);
@@ -111,5 +99,11 @@ namespace HIS.WebApi.Clients.SecretStore.Test
                 }
             }
         }
+
+        #endregion
+
+        #region PROPERTIES
+
+        #endregion
     }
 }

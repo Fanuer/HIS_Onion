@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -59,10 +60,7 @@ namespace HIS.WebApi.SecretStore.Data
             if (String.IsNullOrEmpty(name)){ throw new ArgumentNullException(nameof(name)); }
 
             this.Id = Guid.NewGuid().ToString("N");
-            var key = new byte[32];
-
-            Hasher.Current.CreateHash(this.Id);
-            this.Secret = TextEncodings.Base64Url.Encode(key);
+            this.Secret = Hasher.Current.CreateHash(this.Id);
         }
         /// <summary>
         /// Creates a new active Client-Object
@@ -136,16 +134,19 @@ namespace HIS.WebApi.SecretStore.Data
         /// <summary>
         /// Client Id
         /// </summary>
+        [Required]
         public string Id { get; set; }
 
         /// <summary>
         /// Secret, that is used to sign a bearer token
         /// </summary>
+        [Required]
         public string Secret { get; set; }
 
         /// <summary>
         /// Name of the Client
         /// </summary>
+        [Required]
         public string Name { get; set; }
 
         /// <summary>
@@ -156,16 +157,19 @@ namespace HIS.WebApi.SecretStore.Data
         /// <summary>
         /// Origins that are allowed for this client
         /// </summary>
+        [Required]
         public string AllowedOrigin { get; set; }
 
         /// <summary>
         /// Time Span in Month after a Refresh Token shall become invalid
         /// </summary>
+        [Required]
         public int RefreshTokenLifeTime { get; set; }
 
         /// <summary>
         /// Request Type of a Client
         /// </summary>
+        [Required]
         public ApplicationType ApplicationType { get; set; }
         #endregion
     }
