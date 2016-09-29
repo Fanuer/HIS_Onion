@@ -5,11 +5,11 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6D6B4E95-3BCD-4015-80B6-C9A6AA6EB708}</ProjectGuid>
+    <ProjectGuid>{62039827-AB52-491D-9B73-BA1B6CBDF2B4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HIS.WebApi.SecretStore.Data</RootNamespace>
-    <AssemblyName>HIS.WebApi.SecretStore.Data</AssemblyName>
+    <RootNamespace>HIS.WebApi.Auth.Data</RootNamespace>
+    <AssemblyName>HIS.WebApi.Auth.Data</AssemblyName>
     <DefaultLanguage>de-DE</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -34,28 +34,49 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IClientStore.cs" />
+    <Compile Include="Interfaces\ICountAsync.cs" />
+    <Compile Include="Interfaces\IEnity.cs" />
+    <Compile Include="Interfaces\IRepositoryFindAll.cs" />
+    <Compile Include="Interfaces\IRepositoryUpdate.cs" />
+    <Compile Include="Interfaces\IRole.cs" />
+    <Compile Include="Interfaces\IUser.cs" />
+    <Compile Include="Interfaces\MultiId\IRepositoryAddAndDeleteMultiId.cs" />
+    <Compile Include="Interfaces\MultiId\IRepositoryFindSingleMultiId.cs" />
+    <Compile Include="Interfaces\Repository\IBearerTokenUserManagementRepository.cs" />
+    <Compile Include="Interfaces\Repository\IRefreshTokenRepository.cs" />
+    <Compile Include="Interfaces\Repository\IRoleRepository.cs" />
+    <Compile Include="Interfaces\Repository\IUserManagementRepository.cs" />
+    <Compile Include="Interfaces\Repository\IUserRepository.cs" />
+    <Compile Include="Interfaces\Repository\IUserRoleStore.cs" />
+    <Compile Include="Interfaces\SingleId\IRepositoryAddAndDelete.cs" />
+    <Compile Include="Interfaces\SingleId\IRepositoryFindSingle.cs" />
+    <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\ClientViewModel.cs" />
+    <Compile Include="Models\Enums\ApplicationType.cs" />
+    <Compile Include="Models\RefreshToken.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Owin.Security">
-      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations">
-      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.ComponentModel.DataAnnotations.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.ComponentModel.DataAnnotations.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HIS.Helpers\HIS.Helpers.csproj">
       <Project>{92F4E68B-353C-4301-8558-F2C87176CEDD}</Project>
       <Name>HIS.Helpers</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Enums\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

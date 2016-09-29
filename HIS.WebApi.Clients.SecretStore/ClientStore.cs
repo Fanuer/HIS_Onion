@@ -6,7 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Common.Logging;
 using HIS.Helpers.Http;
-using HIS.WebApi.SecretStore.Data;
+using HIS.WebApi.Auth.Data.Interfaces;
+using HIS.WebApi.Auth.Data.Models;
 
 namespace HIS.WebApi.Clients.SecretStore
 {

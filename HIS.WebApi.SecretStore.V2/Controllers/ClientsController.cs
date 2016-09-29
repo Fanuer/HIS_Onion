@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
-using System.Web.Http.Description;
-using HIS.WebApi.SecretStore.Data;
+using HIS.WebApi.Auth.Data.Interfaces;
+using HIS.WebApi.Auth.Data.Models;
 using HIS.WebApi.SecretStore.V2.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.Swagger.Annotations;
@@ -21,7 +21,7 @@ namespace HIS.WebApi.SecretStore.V2.Controllers
         #endregion
 
         #region FIELDS
-        private readonly ISecretRepository _repository;
+        private readonly IClientRepository _repository;
         #endregion
 
         #region CTOR
@@ -30,7 +30,7 @@ namespace HIS.WebApi.SecretStore.V2.Controllers
         /// Creates a new instance of this controller
         /// </summary>
         /// <param name="repository">used repository</param>
-        public ClientsController(ISecretRepository repository)
+        public ClientsController(IClientRepository repository)
         {
             this._repository = repository;
         }

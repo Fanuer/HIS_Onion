@@ -37,7 +37,7 @@ namespace HIS.WebApi.SecretStore.V2
             services.Configure<MongoDbOptions>(Configuration.GetSection("MongoDbSettings"));
             
             // IoC
-            services.AddScoped<ISecretRepository, MongoDbSecretRepository>();
+            services.AddScoped<IClientRepository, MongoDbClientRepository>();
 
             var pathToDoc = Configuration["Swagger:Path"] ?? GetXmlCommentsPath();
             services.AddSwaggerGen();

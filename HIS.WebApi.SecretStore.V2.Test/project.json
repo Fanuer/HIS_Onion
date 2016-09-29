@@ -1,0 +1,20 @@
+﻿{
+  "version": "1.0.0-*",
+  "testRunner": "xunit",
+  "dependencies": {
+    "HIS.WebApi.SecretStore.V2": "1.0.0-*",
+    "NETStandard.Library": "1.6.0",
+    "xunit": "2.2.0-beta2-build3300",
+    "dotnet-test-xunit": "2.2.0-preview2-build1029"
+  },
+
+  "frameworks": {
+    "net452": {
+      "dependencies": {
+        "HIS.WebApi.SecretStore.Data": {
+          "target": "project"
+        }
+      }
+    }
+  }
+}

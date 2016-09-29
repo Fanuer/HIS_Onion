@@ -6,8 +6,6 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
 using HIS.Testing.Base;
-using HIS.WebApi.Auth.Base.Interfaces;
-using HIS.WebApi.Auth.Base.Models;
 using HIS.WebApi.Auth.Base.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

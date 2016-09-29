@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using Common.Logging;
 using HIS.Helpers.Exceptions;
 using HIS.Helpers.Tests;
-using HIS.WebApi.SecretStore.Data;
+using HIS.WebApi.Auth.Data.Interfaces;
+using HIS.WebApi.Auth.Data.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HIS.WebApi.Clients.SecretStore.Test

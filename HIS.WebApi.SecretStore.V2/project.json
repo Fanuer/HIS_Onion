@@ -28,6 +28,9 @@
         "HIS.Helpers.WebApi": {
           "target": "project"
         },
+        "HIS.WebApi.Auth.Data": {
+          "target": "project"
+        },
         "HIS.WebApi.SecretStore.Data": {
           "target": "project"
         }
@@ -52,5 +55,6 @@
 
   "scripts": {
     "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
-  }
+  },
+  "userSecretsId": "aspnet-HIS.WebApi.SecretStore.V2-20160929072129"
 }
