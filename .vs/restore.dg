@@ -1,12 +1,2 @@
-#:E:\Projekte\HIS\HIS.WebApi.SecretStore.V2\HIS.WebApi.SecretStore.V2.xproj
-E:\Projekte\HIS\HIS.WebApi.SecretStore.V2\HIS.WebApi.SecretStore.V2.xproj|E:\Projekte\HIS\HIS.Helpers.WebApi\HIS.Helpers.WebApi.csproj
-E:\Projekte\HIS\HIS.WebApi.SecretStore.V2\HIS.WebApi.SecretStore.V2.xproj|E:\Projekte\HIS\HIS.WebApi.SecretStore.Data\HIS.WebApi.SecretStore.Data.csproj
-E:\Projekte\HIS\HIS.WebApi.SecretStore.V2\HIS.WebApi.SecretStore.V2.xproj|E:\Projekte\HIS\HIS.WebApi.Auth.Data\HIS.WebApi.Auth.Data.csproj
-E:\Projekte\HIS\HIS.WebApi.Auth.Data\HIS.WebApi.Auth.Data.csproj|E:\Projekte\HIS\HIS.Helpers\HIS.Helpers.csproj
-#:E:\Projekte\HIS\HIS.WebApi.SecretStore.V2.Test\HIS.WebApi.SecretStore.V2.Test.xproj
-E:\Projekte\HIS\HIS.WebApi.SecretStore.V2.Test\HIS.WebApi.SecretStore.V2.Test.xproj|E:\Projekte\HIS\HIS.WebApi.SecretStore.Data\HIS.WebApi.SecretStore.Data.csproj
-E:\Projekte\HIS\HIS.WebApi.SecretStore.V2.Test\HIS.WebApi.SecretStore.V2.Test.xproj|E:\Projekte\HIS\HIS.WebApi.SecretStore.V2\HIS.WebApi.SecretStore.V2.xproj
-E:\Projekte\HIS\HIS.WebApi.SecretStore.V2\HIS.WebApi.SecretStore.V2.xproj|E:\Projekte\HIS\HIS.Helpers.WebApi\HIS.Helpers.WebApi.csproj
-E:\Projekte\HIS\HIS.WebApi.SecretStore.V2\HIS.WebApi.SecretStore.V2.xproj|E:\Projekte\HIS\HIS.WebApi.SecretStore.Data\HIS.WebApi.SecretStore.Data.csproj
-E:\Projekte\HIS\HIS.WebApi.SecretStore.V2\HIS.WebApi.SecretStore.V2.xproj|E:\Projekte\HIS\HIS.WebApi.Auth.Data\HIS.WebApi.Auth.Data.csproj
-E:\Projekte\HIS\HIS.WebApi.Auth.Data\HIS.WebApi.Auth.Data.csproj|E:\Projekte\HIS\HIS.Helpers\HIS.Helpers.csproj
+#:E:\Projekte\HIS\HIS.WebApi.RefreshTokenStore\HIS.WebApi.RefreshTokenStore.xproj
+E:\Projekte\HIS\HIS.WebApi.RefreshTokenStore\HIS.WebApi.RefreshTokenStore.xproj|E:\Projekte\HIS\HIS.Helpers.WebApi\HIS.Helpers.WebApi.csproj

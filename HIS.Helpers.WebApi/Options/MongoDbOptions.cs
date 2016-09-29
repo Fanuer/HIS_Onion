@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace HIS.WebApi.SecretStore.V2.Repositories
+﻿namespace HIS.Helpers.WebApi.Options
 {
     /// <summary>
     /// Options to initialise MongoDB

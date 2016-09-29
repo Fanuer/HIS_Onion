@@ -232,7 +232,7 @@
       <Project>{62039827-ab52-491d-9b73-ba1b6cbdf2b4}</Project>
       <Name>HIS.WebApi.Auth.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HIS.WebApi.Helper\HIS.WebApi.Auth.Base.csproj">
+    <ProjectReference Include="..\HIS.WebApi.Auth.Base\HIS.WebApi.Auth.Base.csproj">
       <Project>{b8ff072a-c2d6-4db8-b8cd-98d2ecd64e1f}</Project>
       <Name>HIS.WebApi.Auth.Base</Name>
     </ProjectReference>

@@ -88,7 +88,7 @@
       <Project>{CFCC12C5-6469-47E5-BAC3-6EB89C8EFA7C}</Project>
       <Name>HIS.Testing.EF</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HIS.WebApi.Helper\HIS.WebApi.Auth.Base.csproj">
+    <ProjectReference Include="..\HIS.WebApi.Auth.Base\HIS.WebApi.Auth.Base.csproj">
       <Project>{B8FF072A-C2D6-4DB8-B8CD-98D2ECD64E1F}</Project>
       <Name>HIS.WebApi.Auth.Base</Name>
     </ProjectReference>

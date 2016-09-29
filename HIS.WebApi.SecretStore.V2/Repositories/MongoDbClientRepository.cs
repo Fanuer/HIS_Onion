@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using HIS.Helpers.WebApi.Options;
 using HIS.WebApi.Auth.Data.Interfaces;
 using HIS.WebApi.Auth.Data.Models;
 using HIS.WebApi.Auth.Data.Models.Enums;

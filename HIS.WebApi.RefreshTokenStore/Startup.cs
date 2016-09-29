@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using HIS.Helpers.WebApi;
 using HIS.Helpers.WebApi.Options;
-using HIS.WebApi.SecretStore.V2.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -13,7 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using Swashbuckle.Swagger.Model;
 
-namespace HIS.WebApi.SecretStore.V2
+namespace HIS.WebApi.RefreshTokenStore
 {
     public class Startup
     {
@@ -32,13 +31,11 @@ namespace HIS.WebApi.SecretStore.V2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add framework services.
             services.AddMvc();
 
             // options
             services.Configure<MongoDbOptions>(Configuration.GetSection("MongoDbSettings"));
-            
-            // IoC
-            services.AddScoped<IClientRepository, MongoDbClientRepository>();
 
             var pathToDoc = Configuration["Swagger:Path"] ?? GetXmlCommentsPath();
             services.AddSwaggerGen();
@@ -47,20 +44,13 @@ namespace HIS.WebApi.SecretStore.V2
                 options.SingleApiVersion(new Info()
                 {
                     Version = "v1",
-                    Title = "HIS Refreshtoken Api"
+                    Title = "HIS SecretStore Api"
                 });
                 options.OperationFilter<AddParametersFilter>();
                 options.IncludeXmlComments(pathToDoc);
                 options.IgnoreObsoleteActions();
                 options.DescribeAllEnumsAsStrings();
             });
-
-        }
-
-        private string GetXmlCommentsPath()
-        {
-            var app = PlatformServices.Default.Application;
-            return System.IO.Path.Combine(app.ApplicationBasePath, String.Concat(app.ApplicationName, ".xml"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,10 +58,16 @@ namespace HIS.WebApi.SecretStore.V2
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            
+
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUi();
+        }
+
+        private string GetXmlCommentsPath()
+        {
+            var app = PlatformServices.Default.Application;
+            return System.IO.Path.Combine(app.ApplicationBasePath, String.Concat(app.ApplicationName, ".xml"));
         }
     }
 }
