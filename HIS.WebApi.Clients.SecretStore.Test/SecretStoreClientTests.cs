@@ -6,6 +6,7 @@ using Common.Logging;
 using HIS.Helpers.Exceptions;
 using HIS.Helpers.Tests;
 using HIS.WebApi.Auth.Data.Interfaces;
+using HIS.WebApi.Auth.Data.Interfaces.Repository;
 using HIS.WebApi.Auth.Data.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -34,19 +35,19 @@ namespace HIS.WebApi.Clients.SecretStore.Test
         [TestMethod]
         public async Task AddFindDeleteViaHttpPossible()
         {
-            using (IClientStore clientStore = new ClientStore(_moqLogger, BaseUri))
+            using (IClientService clientService = new ClientService(_moqLogger, BaseUri))
             {
-                var client = await clientStore.CreateClientAsync(TestClient);
+                var client = await clientService.AddAsync(TestClient);
                 Assert.IsNotNull(client);
 
-                var foundClient = await clientStore.FindClientAsync(client.Id);
+                var foundClient = await clientService.FindAsync(client.Id);
                 Assert.IsNotNull(foundClient);
                 Assert.AreEqual(client, foundClient);
 
-                await clientStore.DeleteClientAsync(foundClient.Id);
+                await clientService.RemoveAsync(foundClient.Id);
                 try
                 {
-                    foundClient = await clientStore.FindClientAsync(client.Id);
+                    foundClient = await clientService.FindAsync(client.Id);
                     Assert.Fail();
                 }
                 catch (ServerException e)
@@ -61,11 +62,11 @@ namespace HIS.WebApi.Clients.SecretStore.Test
         public async Task FindCauses404IfElementNotExists()
         {
             const string clientId = "bla";
-            using (IClientStore clientStore = new ClientStore(_moqLogger, BaseUri))
+            using (IClientService clientService = new ClientService(_moqLogger, BaseUri))
             {
                 try
                 {
-                    var client = await clientStore.FindClientAsync(clientId);
+                    var client = await clientService.FindAsync(clientId);
                     Assert.Fail();
                 }
                 catch (ServerException e)
@@ -79,12 +80,12 @@ namespace HIS.WebApi.Clients.SecretStore.Test
         public async Task CreateCauses400IfElementWithSameNameExists()
         {
             Client client = null;
-            using (IClientStore clientStore = new ClientStore(_moqLogger, BaseUri))
+            using (IClientService clientService = new ClientService(_moqLogger, BaseUri))
             {
                 try
                 {
-                    client = await clientStore.CreateClientAsync(TestClient);
-                    client = await clientStore.CreateClientAsync(TestClient);
+                    client = await clientService.AddAsync(TestClient);
+                    client = await clientService.AddAsync(TestClient);
                     Assert.Fail();
                 }
                 catch (ServerException e)
@@ -95,7 +96,7 @@ namespace HIS.WebApi.Clients.SecretStore.Test
                 {
                     if (client != null)
                     {
-                        await clientStore.DeleteClientAsync(client.Id);
+                        await clientService.RemoveAsync(client.Id);
                     }
                 }
             }

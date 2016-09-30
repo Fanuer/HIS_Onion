@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HIS.Testing.Base;
 using HIS.WebApi.Auth.Base.Repositories;
+using HIS.WebApi.Auth.Data.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -64,7 +65,7 @@ namespace HIS.WebApi.Auth.Base.Test.Tests
           .Returns(new TestDbAsyncQueryProvider<Client>(MultipleObjects.AsQueryable().Provider));
 
       this.Context = new Mock<BearerDbContext>();
-      this.Context.Setup(m => m.Clients).Returns(this.DbSet.Object);
+      //this.Context.Setup(m => m.Clients).Returns(this.DbSet.Object);
       this.Context.Setup(m => m.Set<Client>()).Returns(this.DbSet.Object);
       this.Context.Setup(c => c.SaveChangesAsync()).Returns(() => Task.Run(() => 1)).Verifiable();
     }
@@ -114,7 +115,7 @@ namespace HIS.WebApi.Auth.Base.Test.Tests
 
         this.DbSet.Verify(m => m.Add(It.IsAny<Client>()), Times.Once());
         this.Context.Verify(m => m.SaveChangesAsync(), Times.Once());
-        Assert.IsTrue(addedSuccessfully);
+        Assert.IsNotNull(addedSuccessfully);
       }
     }
 

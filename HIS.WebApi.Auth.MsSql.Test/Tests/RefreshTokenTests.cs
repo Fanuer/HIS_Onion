@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HIS.Testing.Base;
 using HIS.WebApi.Auth.Base.Repositories;
+using HIS.WebApi.Auth.Data.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

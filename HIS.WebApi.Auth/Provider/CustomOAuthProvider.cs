@@ -5,15 +5,14 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using HIS.Helpers.Crypto;
-using HIS.WebApi.Auth.Base.Models.Enums;
-using HIS.WebApi.Auth.Base.Repositories;
-using HIS.WebApi.Auth.Models;
-using HIS.WebApi.Auth.Repositories;
+using HIS.WebApi.Auth.Data.Interfaces.Repository;
+using HIS.WebApi.Auth.Data.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using Onion.Client;
+using IUser = HIS.WebApi.Auth.Data.Interfaces.Models.IUser<string>;
 
 namespace HIS.WebApi.Auth.Provider
 {
@@ -24,12 +23,12 @@ namespace HIS.WebApi.Auth.Provider
 
         #region FIELDS
 
-        private IBearerTokenUserManagementRepository<Base.Interfaces.IUser<string>> _repository;
+        private IBearerTokenUserService<IUser> _repository;
         #endregion
 
         #region CTOR
 
-        public CustomOAuthProvider(IBearerTokenUserManagementRepository<Base.Interfaces.IUser<string>> repository)
+        public CustomOAuthProvider(IBearerTokenUserService<IUser> repository)
         {
             this._repository = repository;
         }
@@ -54,7 +53,6 @@ namespace HIS.WebApi.Auth.Provider
         {
             string clientId;
             string clientSecret;
-            Client client = null;
 
             if (!context.TryGetBasicCredentials(out clientId, out clientSecret))
             {
@@ -70,14 +68,14 @@ namespace HIS.WebApi.Auth.Provider
                 return;
             }
             
-            client = await _repository.Clients.FindAsync(context.ClientId);
+            var client = await _repository.Clients.FindAsync(context.ClientId);
             if (client == null)
             {
                 context.SetError("invalid_clientId", $"Client '{context.ClientId}' is not registered in the system.");
                 return;
             }
 
-            if (client.ApplicationType == ApplicationTypes.NativeConfidential)
+            if (client.ApplicationType == Data.Models.Enums.ApplicationType.NativeConfidential)
             {
                 if (string.IsNullOrWhiteSpace(clientSecret))
                 {
@@ -115,7 +113,7 @@ namespace HIS.WebApi.Auth.Provider
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
             //Search user by username and password
-            var userManager = context.OwinContext.GetUserManager<UserManager<HIS.WebApi.Auth.Base.Interfaces.IUser<string>>>();
+            var userManager = context.OwinContext.GetUserManager<UserManager<IUser>>();
 
             var user = await userManager.FindAsync(context.UserName, context.Password);
 
@@ -125,11 +123,7 @@ namespace HIS.WebApi.Auth.Provider
                 return;
             }
 
-            var oldtokens = (await _repository.RefreshTokens.GetAllAsync()).Where(x => x.ExpiresUtc < DateTime.UtcNow || x.Subject.Equals(user.UserName)).ToList();
-            foreach (var token in oldtokens)
-            {
-                await _repository.RefreshTokens.RemoveAsync(token);
-            }
+            await _repository.RefreshTokens.RemoveExpiredRefreshTokensAsync();
 
             // Generate claim and JWT-Ticket 
             ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager, "JWT");

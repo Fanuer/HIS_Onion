@@ -48,6 +48,26 @@
         }
       }
     },
+    "HIS.WebApi.Auth.Data/1.0.0": {
+      "type": "project",
+      "framework": ".NETFramework,Version=v4.5",
+      "compile": {
+        "bin/Debug/HIS.WebApi.Auth.Data.dll": {}
+      },
+      "runtime": {
+        "../packages/Microsoft.AspNet.Identity.Core.2.2.1/lib/net45/Microsoft.AspNet.Identity.Core.dll": {},
+        "../packages/Microsoft.AspNet.Identity.EntityFramework.2.2.1/lib/net45/Microsoft.AspNet.Identity.EntityFramework.dll": {},
+        "C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.5/System.ComponentModel.DataAnnotations.dll": {},
+        "bin/Debug/HIS.WebApi.Auth.Data.dll": {}
+      },
+      "contentFiles": {
+        "bin/Debug/HIS.WebApi.Auth.Data.pdb": {
+          "buildAction": "None",
+          "codeLanguage": "any",
+          "copyToOutput": true
+        }
+      }
+    },
     "HIS.WebApi.SecretStore.Data/1.0.0": {
       "type": "project",
       "framework": ".NETFramework,Version=v4.5",

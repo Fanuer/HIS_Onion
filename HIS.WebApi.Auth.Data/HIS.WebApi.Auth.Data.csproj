@@ -34,20 +34,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IClientStore.cs" />
+    <Compile Include="Interfaces\Repository\IClientService.cs" />
     <Compile Include="Interfaces\ICountAsync.cs" />
-    <Compile Include="Interfaces\IEnity.cs" />
+    <Compile Include="Interfaces\Models\IEnity.cs" />
     <Compile Include="Interfaces\IRepositoryFindAll.cs" />
     <Compile Include="Interfaces\IRepositoryUpdate.cs" />
-    <Compile Include="Interfaces\IRole.cs" />
-    <Compile Include="Interfaces\IUser.cs" />
+    <Compile Include="Interfaces\Models\IRole.cs" />
+    <Compile Include="Interfaces\Models\IUser.cs" />
     <Compile Include="Interfaces\MultiId\IRepositoryAddAndDeleteMultiId.cs" />
     <Compile Include="Interfaces\MultiId\IRepositoryFindSingleMultiId.cs" />
-    <Compile Include="Interfaces\Repository\IBearerTokenUserManagementRepository.cs" />
-    <Compile Include="Interfaces\Repository\IRefreshTokenRepository.cs" />
-    <Compile Include="Interfaces\Repository\IRoleRepository.cs" />
-    <Compile Include="Interfaces\Repository\IUserManagementRepository.cs" />
-    <Compile Include="Interfaces\Repository\IUserRepository.cs" />
+    <Compile Include="Interfaces\Repository\IBearerTokenUserService.cs" />
+    <Compile Include="Interfaces\Repository\IReadOnlyClientService.cs" />
+    <Compile Include="Interfaces\Repository\IRefreshTokenService.cs" />
+    <Compile Include="Interfaces\Repository\IRoleService.cs" />
+    <Compile Include="Interfaces\Repository\IUserService.cs" />
     <Compile Include="Interfaces\Repository\IUserRoleStore.cs" />
     <Compile Include="Interfaces\SingleId\IRepositoryAddAndDelete.cs" />
     <Compile Include="Interfaces\SingleId\IRepositoryFindSingle.cs" />

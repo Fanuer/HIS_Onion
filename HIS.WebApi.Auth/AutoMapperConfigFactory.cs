@@ -2,6 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Security.Claims;
 using AutoMapper;
+using HIS.WebApi.Auth.Data.Interfaces.Models;
+using HIS.WebApi.Auth.Data.Models;
 using HIS.WebApi.Auth.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Onion.Client;
@@ -37,8 +39,7 @@ namespace HIS.WebApi.Auth
 
     private User FromOnionUser(Onion.Client.IUser user)
     {
-      var claims = new Collection<Claim>();
-      return new User(user.Id, user.Name, user.DisplayName, claims);
+      return new User(user.Id, user.Name, user.DisplayName);
     }
     #endregion
 

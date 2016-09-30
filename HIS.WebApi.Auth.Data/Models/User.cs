@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using HIS.WebApi.Auth.Data.Interfaces;
+using HIS.WebApi.Auth.Data.Interfaces.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace HIS.WebApi.Auth.Data.Models
 {
-  public class User: IdentityUser, Interfaces.IUser<int>, Interfaces.IUser<string>
+  public class User: IdentityUser, Interfaces.Models.IUser<int>, Interfaces.Models.IUser<string>
   {
     #region FIELDS
 

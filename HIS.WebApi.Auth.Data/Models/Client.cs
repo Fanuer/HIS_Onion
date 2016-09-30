@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using HIS.Helpers.Crypto;
+using HIS.WebApi.Auth.Data.Interfaces.Models;
 using HIS.WebApi.Auth.Data.Models.Enums;
 
 namespace HIS.WebApi.Auth.Data.Models
@@ -8,7 +9,7 @@ namespace HIS.WebApi.Auth.Data.Models
     /// <summary>
     /// Defines Client, that uses the AuthServer
     /// </summary>
-    public class Client
+    public class Client:IEntity<string>
     {
         #region Ctor
 
@@ -22,7 +23,7 @@ namespace HIS.WebApi.Auth.Data.Models
         /// <param name="active">Is the client active or closed</param>
         /// <param name="type">Request Type of a Client</param>
         /// <param name="timeSpan">Time Span in Month after a Refresh Token shall become invalid</param>
-        public Client(string id = "", string name = "", string secret = "", string allowedOrigin = "*", ApplicationType type = Enums.ApplicationType.JavaScript, int timeSpan = 6, bool active = true)
+        internal Client(string id = "", string name = "", string secret = "", string allowedOrigin = "*", ApplicationType type = Enums.ApplicationType.JavaScript, int timeSpan = 6, bool active = true)
         {
             this.Id = id;
             this.Secret = secret;
@@ -36,7 +37,7 @@ namespace HIS.WebApi.Auth.Data.Models
         /// <summary>
         /// Creates a new Client-Object
         /// </summary>
-        public Client() : this("", "", "")
+        internal Client() : this("", "", "")
         {
 
         }

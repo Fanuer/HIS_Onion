@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "exports": {
+    "HIS.Helpers.WebApi/1.0.0": {
+      "type": "project",
+      "framework": ".NETFramework,Version=v4.5.2",
+      "compile": {
+        "bin/HIS.Helpers.WebApi.dll": {}
+      },
+      "runtime": {
+        "../packages/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.2/lib/net45/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll": {},
+        "C:/Users/Stefan/.nuget/packages/Microsoft.AspNetCore.Mvc.Abstractions/1.0.1/lib/net451/Microsoft.AspNetCore.Mvc.Abstractions.dll": {},
+        "C:/Users/Stefan/.nuget/packages/Microsoft.AspNetCore.Mvc.ApiExplorer/1.0.1/lib/net451/Microsoft.AspNetCore.Mvc.ApiExplorer.dll": {},
+        "C:/Users/Stefan/.nuget/packages/Swashbuckle.Swagger/6.0.0-beta901/lib/net451/Swashbuckle.Swagger.dll": {},
+        "C:/Users/Stefan/.nuget/packages/Swashbuckle.SwaggerGen/6.0.0-beta901/lib/net451/Swashbuckle.SwaggerGen.dll": {},
+        "bin/HIS.Helpers.WebApi.dll": {}
+      },
+      "contentFiles": {
+        "bin/HIS.Helpers.WebApi.pdb": {
+          "buildAction": "None",
+          "codeLanguage": "any",
+          "copyToOutput": true
+        }
+      }
+    }
+  }
+}

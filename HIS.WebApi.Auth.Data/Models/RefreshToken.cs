@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using HIS.WebApi.Auth.Data.Interfaces;
+using HIS.WebApi.Auth.Data.Interfaces.Models;
 
 namespace HIS.WebApi.Auth.Data.Models
 {

@@ -8,11 +8,12 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using HIS.WebApi.Auth.Data.Interfaces;
+using HIS.WebApi.Auth.Data.Interfaces.Models;
 using HIS.WebApi.Auth.Data.Interfaces.SingleId;
 
 namespace HIS.WebApi.Auth.Base.Repositories
 {
-  internal abstract class GenericDbRepository<T, TIdProperty> : IRepositoryAddAndDelete<T, TIdProperty>, IRepositoryFindAll<T>, IRepositoryFindSingle<T, TIdProperty>, IRepositoryUpdate<T, TIdProperty>, ICountAsync<T> where T : class, IEntity<TIdProperty>
+  internal abstract class GenericDbRepository<T, TIdProperty> : IRepositoryAddAndDelete<T, TIdProperty>, IRepositoryFindAll<T>, IRepositoryFindSingle<T, TIdProperty>, IRepositoryUpdate<T, TIdProperty>, ICountAsync where T : class, IEntity<TIdProperty>
   {
     #region Field
 
@@ -29,7 +30,7 @@ namespace HIS.WebApi.Auth.Base.Repositories
     #endregion
 
     #region Method
-    public async Task<bool> AddAsync(T model)
+    public async Task<T> AddAsync(T model)
     {
       var result = false;
       if (model == null)
@@ -51,7 +52,7 @@ namespace HIS.WebApi.Auth.Base.Repositories
       {
         throw new DbUpdateException($"Unable to add Entry of type {typeof(T).Namespace}", e);
       }
-      return result;
+      return await this.FindAsync(model.Id);
     }
 
     public async Task<bool> RemoveAsync(TIdProperty id)
@@ -117,7 +118,7 @@ namespace HIS.WebApi.Auth.Base.Repositories
       return await this.DBContext.SaveChangesAsync() > 0;
     }
 
-    public async Task<int> CountAsync<T>() where T:class
+    public async Task<int> CountAsync()
     {
       return await DBContext.Set<T>().CountAsync();
     }
@@ -128,5 +129,6 @@ namespace HIS.WebApi.Auth.Base.Repositories
 
     protected DbContext DBContext { get; private set; }
     #endregion
+
   }
 }
