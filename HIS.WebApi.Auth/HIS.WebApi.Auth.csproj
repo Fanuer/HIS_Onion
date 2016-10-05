@@ -199,7 +199,6 @@
     <Compile Include="Models\XMLModels\OnionModel.cs" />
     <Compile Include="Models\XMLModels\XmlUri.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Provider\CustomOAuthProvider.cs" />
     <Compile Include="Provider\OnionOAuthProvider.cs" />
     <Compile Include="Repositories\OnionUserStore.cs" />
     <Compile Include="Startup.cs" />
@@ -228,11 +227,7 @@
       <Project>{92F4E68B-353C-4301-8558-F2C87176CEDD}</Project>
       <Name>HIS.Helpers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HIS.WebApi.Auth.Data\HIS.WebApi.Auth.Data.csproj">
-      <Project>{62039827-ab52-491d-9b73-ba1b6cbdf2b4}</Project>
-      <Name>HIS.WebApi.Auth.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.WebApi.Auth.Base\HIS.WebApi.Auth.MsSql.csproj">
+    <ProjectReference Include="..\HIS.WebApi.Auth.MsSql\HIS.WebApi.Auth.MsSql.csproj">
       <Project>{b8ff072a-c2d6-4db8-b8cd-98d2ecd64e1f}</Project>
       <Name>HIS.WebApi.Auth.MsSql</Name>
     </ProjectReference>

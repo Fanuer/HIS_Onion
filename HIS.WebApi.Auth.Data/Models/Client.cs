@@ -23,7 +23,7 @@ namespace HIS.WebApi.Auth.Data.Models
         /// <param name="active">Is the client active or closed</param>
         /// <param name="type">Request Type of a Client</param>
         /// <param name="timeSpan">Time Span in Month after a Refresh Token shall become invalid</param>
-        internal Client(string id = "", string name = "", string secret = "", string allowedOrigin = "*", ApplicationType type = Enums.ApplicationType.JavaScript, int timeSpan = 6, bool active = true)
+        internal Client(string id = "", string name = "", string secret = "", string allowedOrigin = "*", ApplicationType type = ApplicationType.JavaScript, int timeSpan = 6, bool active = true)
         {
             this.Id = id;
             this.Secret = secret;

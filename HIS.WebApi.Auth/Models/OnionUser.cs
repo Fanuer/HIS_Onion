@@ -5,10 +5,11 @@ using System.Data.Entity.Core.Common.CommandTrees;
 using System.Linq;
 using System.Security.Claims;
 using System.Web;
+using HIS.WebApi.Auth.Base.Models;
 
 namespace HIS.WebApi.Auth.Models
 {
-    public class OnionUser: Data.Models.User
+    public class OnionUser: User
     {
         #region CONST
         #endregion

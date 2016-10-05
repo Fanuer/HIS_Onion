@@ -4,27 +4,12 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Org.BouncyCastle.Security;
 
 namespace HIS.Helpers
 {
     public static class ObjectExtensions
     {
-        public static string GetShaHash(this string input)
-        {
-            if (String.IsNullOrEmpty(input)){ throw new ArgumentNullException(input); }
-
-            var encData = Encoding.UTF8.GetBytes(input);
-            var myHash = new Org.BouncyCastle.Crypto.Digests.Sha256Digest();
-            myHash.BlockUpdate(encData, 0, encData.Length);
-            var compArr = new byte[myHash.GetDigestSize()];
-            myHash.DoFinal(compArr, 0);
-
-            return Convert.ToBase64String(compArr);
-        }
-        
-
-        /// <summary>
+       /// <summary>
         /// Tries to deserialise the content from a JSON to an object
         /// </summary>
         /// <typeparam name="T">type of target object</typeparam>
@@ -45,9 +30,5 @@ namespace HIS.Helpers
 
             return result;
         }
-
-        
-
-
     }
 }

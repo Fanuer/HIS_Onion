@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using HIS.WebApi.Auth.Data.Core.Models;
 using HIS.WebApi.Auth.Data.Interfaces.SingleId;
 using HIS.WebApi.Auth.Data.Models;
 

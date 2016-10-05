@@ -1,5 +1,8 @@
-﻿{
+{
   "dependencies": {
+    "AutoMapper": "5.1.1",
+    "Microsoft.AspNetCore.Authentication.JwtBearer": "1.0.0",
+    "Microsoft.AspNetCore.Identity": "1.0.0",
     "Microsoft.AspNetCore.Mvc": "1.0.1",
     "Microsoft.AspNetCore.Routing": "1.0.1",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
@@ -10,7 +13,10 @@
     "Microsoft.Extensions.Logging": "1.0.0",
     "Microsoft.Extensions.Logging.Console": "1.0.0",
     "Microsoft.Extensions.Logging.Debug": "1.0.0",
-    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0"
+    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
+    "Microsoft.IdentityModel.Tokens": "5.0.0",
+    "Onion.Client": "4.5.7.2411",
+    "Thinktecture.IdentityModel.Core": "1.4.0"
   },
 
   "tools": {
@@ -18,7 +24,19 @@
   },
 
   "frameworks": {
-    "net452": { }
+    "net461": {
+      "dependencies": {
+        "HIS.Helpers": {
+          "target": "project"
+        },
+        "HIS.WebApi.Auth.Base": {
+          "target": "project"
+        },
+        "HIS.WebApi.Auth.Data": {
+          "target": "project"
+        }
+      }
+    }
   },
 
   "buildOptions": {

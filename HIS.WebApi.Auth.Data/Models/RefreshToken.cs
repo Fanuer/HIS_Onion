@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using HIS.WebApi.Auth.Data.Interfaces;
 using HIS.WebApi.Auth.Data.Interfaces.Models;
 
 namespace HIS.WebApi.Auth.Data.Models
@@ -49,7 +48,6 @@ namespace HIS.WebApi.Auth.Data.Models
     /// Indicates to which user this refresh token belongs
     /// </summary>
     [Required]
-    [MaxLength(50)]
     public string Subject { get; set; }
     /// <summary>
     /// Is used to revoke the refresh token for a certain user on certain 
@@ -57,7 +55,6 @@ namespace HIS.WebApi.Auth.Data.Models
     /// by different clients available.
     /// </summary>
     [Required]
-    [MaxLength(50)]
     public string ClientId { get; set; }
     /// <summary>
     /// Indicated when the Refreshtoken was requestd

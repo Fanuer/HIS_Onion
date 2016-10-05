@@ -7,7 +7,7 @@
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
     <ProjectGuid>04742004-c276-4bc1-b6cd-388c682df28a</ProjectGuid>
-    <RootNamespace>HIS.WebApi.Auth.Core</RootNamespace>
+    <RootNamespace>HIS.WebApi.Auth.V2</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
@@ -15,5 +15,10 @@
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HIS.Helpers\HIS.Helpers.csproj" />
+    <ProjectReference Include="..\HIS.WebApi.Auth.Base\HIS.WebApi.Auth.Base.csproj" />
+    <ProjectReference Include="..\HIS.WebApi.Auth.Data\HIS.WebApi.Auth.Data.csproj" />
+  </ItemGroup>
   <Import Project="$(VSToolsPath)\DotNet.Web\Microsoft.DotNet.Web.targets" Condition="'$(VSToolsPath)' != ''" />
 </Project>

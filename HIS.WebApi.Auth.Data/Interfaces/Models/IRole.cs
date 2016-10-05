@@ -1,8 +1,7 @@
-﻿using IAspNetRole = Microsoft.AspNet.Identity.IRole;
-
-namespace HIS.WebApi.Auth.Data.Interfaces.Models
+﻿namespace HIS.WebApi.Auth.Data.Interfaces.Models
 {
-  public interface IRole<TKey> : Microsoft.AspNet.Identity.IRole<TKey>, IEntity<TKey>
-  {
-  }
+    public interface IRole<out TKey> : IEntity<TKey>
+    {
+        string Name { get; set; }
+    }
 }

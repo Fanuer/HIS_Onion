@@ -15,7 +15,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("de")]
-[assembly: InternalsVisibleTo("HIS.WebApi.Auth.Base.Test")]
 
 // Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
 //

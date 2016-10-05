@@ -10,7 +10,6 @@ namespace HIS.WebApi.Auth.Data.Models
         /// <summary>
         /// Client name
         /// </summary>
-        [MaxLength(100)]
         [Required]
         public string Name { get; set; }
     }

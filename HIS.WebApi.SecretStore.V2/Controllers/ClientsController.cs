@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
+using HIS.WebApi.Auth.Data.Core.Models;
 using HIS.WebApi.Auth.Data.Interfaces;
 using HIS.WebApi.Auth.Data.Models;
 using HIS.WebApi.SecretStore.V2.Repositories;
@@ -49,7 +50,7 @@ namespace HIS.WebApi.SecretStore.V2.Controllers
         [SwaggerOperation("GetById")]
         [ProducesResponseType(typeof(Client), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Client), (int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> FindClientAsync(string clientId)
+        public async Task<IActionResult> FindClientAsync([Required]string clientId)
         {
             var result = await _repository.FindClientAsync(clientId);
             if (result == null)
@@ -99,7 +100,7 @@ namespace HIS.WebApi.SecretStore.V2.Controllers
         [SwaggerResponse(HttpStatusCode.OK)]
         [SwaggerResponse(HttpStatusCode.NotFound)]
         [HttpDelete("{clientId}")]
-        public async Task<IActionResult> DeleteClientAsync(string clientId)
+        public async Task<IActionResult> DeleteClientAsync([Required]string clientId)
         {
             var client = await _repository.FindClientAsync(clientId);
             if (client == null)

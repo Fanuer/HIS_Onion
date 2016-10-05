@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using HIS.WebApi.Auth.Data.Models;
-using HIS.WebApi.Auth.Data.Models.Enums;
+using HIS.WebApi.Auth.Data.Core.Models;
+using HIS.WebApi.Auth.Data.Core.Models.Enums;
 
 namespace HIS.WebApi.SecretStore.V2.Repositories
 {

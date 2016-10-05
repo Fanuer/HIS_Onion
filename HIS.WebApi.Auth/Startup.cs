@@ -3,7 +3,6 @@ using System.Configuration;
 using System.Web.Http;
 using AutoMapper;
 using HIS.WebApi.Auth;
-using HIS.WebApi.Auth.Provider;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
